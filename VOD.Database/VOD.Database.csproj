@@ -17,8 +17,4 @@
     <ProjectReference Include="..\VOD.Domain\VOD.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-
-  </ItemGroup>
-
 </Project>
