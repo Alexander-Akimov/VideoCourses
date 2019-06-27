@@ -14,6 +14,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VOD.Domain.Entities;
 using VOD.Database;
+using VOD.Database.Services;
+using VOD.Domain.DTOModles.UI;
+using AutoMapper;
+using VOD.UI.Mapping;
 
 namespace VOD.UI
 {
@@ -56,6 +60,11 @@ namespace VOD.UI
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddScoped<IDbReadService, DbReadService>();
+            services.AddScoped<IUIReadService, UIReadService>();
+                      
+            services.AddSingleton(AutoMapperConfig.GetMapper());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,6 +86,7 @@ namespace VOD.UI
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            //Uncomment to seed the database
             //DbInitializer.Initialize(dbContext);
 
             app.UseAuthentication();

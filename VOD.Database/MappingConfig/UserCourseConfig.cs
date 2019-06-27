@@ -12,14 +12,6 @@ namespace VOD.Database.MappingConfig
         public void Configure(EntityTypeBuilder<UserCourse> builder)
         {
             builder.HasKey(uc => new { uc.UserId, uc.CourseId });
-
-            //builder.HasOne(pt => pt.Prescriber)
-            //    .WithMany(p => p.PrescriberAttributeValues)
-            //    .HasForeignKey(pt => pt.PrescriberId);
-
-            //builder.HasOne(pt => pt.AttributeValue)
-            //    .WithMany(p => p.PrescriberAttributeValues)
-            //    .HasForeignKey(pt => pt.AttributeValueId);
         }
     }
 }
