@@ -13,14 +13,17 @@ using VOD.Domain.Entities;
 
 namespace VOD.UI.Areas.Identity.Pages.Account
 {
+    //[IgnoreAntiforgeryToken]
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
         private readonly SignInManager<VODUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<VODUser> _userManager;
 
-        public LoginModel(SignInManager<VODUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(UserManager<VODUser> userManager, SignInManager<VODUser> signInManager, ILogger<LoginModel> logger)
         {
+            _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
         }
@@ -65,16 +68,19 @@ namespace VOD.UI.Areas.Identity.Pages.Account
 
             ReturnUrl = returnUrl;
         }
-
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+
+            //var user = await _userManager.FindByEmailAsync(Input.Email);
+            //if (user == null) return Page();
 
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                //var result = await _signInManager.CheckPasswordSignInAsync(user, Input.Password, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

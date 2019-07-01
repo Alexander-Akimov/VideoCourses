@@ -63,7 +63,7 @@ namespace VOD.UI
 
             services.AddScoped<IDbReadService, DbReadService>();
             services.AddScoped<IUIReadService, UIReadService>();
-                      
+
             services.AddSingleton(AutoMapperConfig.GetMapper());
         }
 
@@ -84,7 +84,7 @@ namespace VOD.UI
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-           // app.UseCookiePolicy();
+            // app.UseCookiePolicy();
 
             //Uncomment to seed the database
             //DbInitializer.Initialize(dbContext);
