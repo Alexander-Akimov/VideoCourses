@@ -22,6 +22,14 @@ namespace VOD.Database.Services
                 .Where(c => c.CourseId.Equals(courseId))
                 .LoadAsync();
 
+            await _dbReadService.GetQueryAsync<Video>() // load course's videos
+                .Where(v => v.CourseId.Equals(courseId))
+                .LoadAsync();
+
+            await _dbReadService.GetQueryAsync<Download>() // load course's Downloads
+                .Where(v => v.CourseId.Equals(courseId))
+                .LoadAsync();
+
             var userCourse = await _dbReadService.GetQueryAsync<UserCourse>() // one row sql query result
                 .Where(uc => uc.UserId.Equals(userId) && uc.CourseId.Equals(courseId))
                 .Include(c => c.Course) // load course

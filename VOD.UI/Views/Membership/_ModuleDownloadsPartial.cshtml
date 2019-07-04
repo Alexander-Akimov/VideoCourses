@@ -1,0 +1,15 @@
+﻿@model IEnumerable<DownloadDTO>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<ul>
+    @foreach (var download in Model)
+    {
+        <li>
+            <a href="@download.DownloadUrl">
+                <i class="material-icons">save_alt</i>
+                <span>&nbsp;@download.DownloadTitle</span>
+            </a>
+        </li>
+    }
+</ul>
