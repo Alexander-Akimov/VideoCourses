@@ -67,14 +67,14 @@ namespace VOD.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> Video(int id)
         {
-            var video = await _uiReadService.GetVideoAsync(_userId, videoId: id);
-            var course = await _uiReadService.GetCourseAsync(_userId, video.CourseId);
+            var videoEntity = await _uiReadService.GetVideoAsync(_userId, videoId: id);
+            var courseEntity = await _uiReadService.GetCourseAsync(_userId, videoEntity.CourseId);
 
-            var videoDto = _mapper.Map<VideoDTO>(video);
-            var courseDto = _mapper.Map<CourseDTO>(course);
-            var instructorDto = _mapper.Map<InstructorDTO>(course.Instructor);
+            var videoDto = _mapper.Map<VideoDTO>(videoEntity);
+            var courseDto = _mapper.Map<CourseDTO>(courseEntity);
+            var instructorDto = _mapper.Map<InstructorDTO>(courseEntity.Instructor);
 
-            var videos = (await _uiReadService.GetVideosAsync(_userId, video.ModuleId))
+            var videos = (await _uiReadService.GetVideosAsync(_userId, videoEntity.ModuleId))
                 .OrderBy(o => o.Id).ToList();
 
             var count = videos.Count();
