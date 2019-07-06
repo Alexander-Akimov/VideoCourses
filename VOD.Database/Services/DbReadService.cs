@@ -23,7 +23,7 @@ namespace VOD.Database.Services
         }
 
         public IQueryable<TEntity> GetQueryAsync<TEntity>(Expression<Func<TEntity, bool>> expression = null, bool include = false) where TEntity : class
-        {            
+        {
             var items = _db.Set<TEntity>().AsQueryable();
             if (include)
                 items = Include(items);
@@ -97,6 +97,17 @@ namespace VOD.Database.Services
             return _db.Model.FindEntityType(typeof(TEntity))
                  .GetNavigations()
                  .Select(e => e.Name);
+        }
+
+        public (int courses, int downloads, int instructors, int modules, int videos, int users) Count()
+        {
+            return (
+                 courses: _db.Courses.Count(),
+                 downloads: _db.Downloads.Count(),
+                 instructors: _db.Instructors.Count(),
+                 modules: _db.Modules.Count(),
+                 videos: _db.Videos.Count(),
+                 users: _db.Users.Count());
         }
     }
 }
