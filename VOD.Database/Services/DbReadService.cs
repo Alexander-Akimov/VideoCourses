@@ -11,20 +11,20 @@ namespace VOD.Database.Services
 
     public class DbReadService : IDbReadService
     {
-        private VODContext _db;
+        private VODContext _dBContext;
         public DbReadService(VODContext db)
         {
-            _db = db;
+            _dBContext = db;
         }
 
         public async Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>> expression) where TEntity : class
         {
-            return await _db.Set<TEntity>().AnyAsync(expression);
+            return await _dBContext.Set<TEntity>().AnyAsync(expression);
         }
 
         public IQueryable<TEntity> GetQueryAsync<TEntity>(Expression<Func<TEntity, bool>> expression = null, bool include = false) where TEntity : class
         {
-            var items = _db.Set<TEntity>().AsQueryable();
+            var items = _dBContext.Set<TEntity>().AsQueryable();
             if (include)
                 items = Include(items);
 
@@ -36,7 +36,7 @@ namespace VOD.Database.Services
 
         public async Task<List<TEntity>> GetAsync<TEntity>(Expression<Func<TEntity, bool>> expression = null, bool include = false) where TEntity : class
         {
-            var items = _db.Set<TEntity>().AsQueryable();
+            var items = _dBContext.Set<TEntity>().AsQueryable();
             if (include)
                 items = Include(items);
 
@@ -56,7 +56,7 @@ namespace VOD.Database.Services
 
         public async Task<TEntity> SingleAsync<TEntity>(Expression<Func<TEntity, bool>> expression = null, bool include = false) where TEntity : class
         {
-            var items = _db.Set<TEntity>().AsQueryable();
+            var items = _dBContext.Set<TEntity>().AsQueryable();
             if (include)
                 items = Include(items);
 
@@ -68,12 +68,12 @@ namespace VOD.Database.Services
 
         public void Include<TEntity>() where TEntity : class
         {
-            var propertyNames = _db.Model.FindEntityType(typeof(TEntity))
+            var propertyNames = _dBContext.Model.FindEntityType(typeof(TEntity))
                 .GetNavigations()
                 .Select(e => e.Name);
 
             foreach (var name in propertyNames)
-                _db.Set<TEntity>().Include(name).Load();
+                _dBContext.Set<TEntity>().Include(name).Load();
         }
 
         public void Include<TEntity1, TEntity2>()
@@ -94,7 +94,7 @@ namespace VOD.Database.Services
         }
         private IEnumerable<string> GetNavPropsNames<TEntity>()
         {
-            return _db.Model.FindEntityType(typeof(TEntity))
+            return _dBContext.Model.FindEntityType(typeof(TEntity))
                  .GetNavigations()
                  .Select(e => e.Name);
         }
@@ -102,12 +102,12 @@ namespace VOD.Database.Services
         public (int courses, int downloads, int instructors, int modules, int videos, int users) Count()
         {
             return (
-                 courses: _db.Courses.Count(),
-                 downloads: _db.Downloads.Count(),
-                 instructors: _db.Instructors.Count(),
-                 modules: _db.Modules.Count(),
-                 videos: _db.Videos.Count(),
-                 users: _db.Users.Count());
+                 courses: _dBContext.Courses.Count(),
+                 downloads: _dBContext.Downloads.Count(),
+                 instructors: _dBContext.Instructors.Count(),
+                 modules: _dBContext.Modules.Count(),
+                 videos: _dBContext.Videos.Count(),
+                 users: _dBContext.Users.Count());
         }
     }
 }
