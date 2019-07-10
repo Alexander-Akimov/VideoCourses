@@ -34,7 +34,7 @@ namespace VOD.Database.Services
             }
             catch (Exception)
             {
-                throw;
+                throw; // why do i need this? if so then why do we need try/catch?
             }
         }
         public void Update<TEntity>(TEntity entity) where TEntity : class
@@ -44,7 +44,7 @@ namespace VOD.Database.Services
                 var entityObj = _dbContext.Find<TEntity>(entity.GetType().GetProperty("id").GetValue(entity));
                 if (entityObj != null)
                     _dbContext.Entry(entityObj).State = //do this to be able to update the entity
-                        EntityState.Detached; //The entity isn’t tracked
+                        EntityState.Detached; //found entity isn’t tracked now
 
                 _dbContext.Update(entity);
             }

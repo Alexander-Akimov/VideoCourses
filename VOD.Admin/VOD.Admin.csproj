@@ -15,6 +15,7 @@
 
 
   <ItemGroup>
+    
     <ProjectReference Include="..\VOD.Database\VOD.Database.csproj" />
     <ProjectReference Include="..\VOD.Domain\VOD.Domain.csproj" />
   </ItemGroup>
