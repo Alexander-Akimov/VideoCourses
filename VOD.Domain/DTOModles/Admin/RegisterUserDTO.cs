@@ -17,7 +17,7 @@ namespace VOD.Domain.DTOModles.Admin
         public string Password { get; set; }
 
         [Display(Name ="Confirm password")]
-        [Compare("Password", ErrorMessage ="The password and confirmation Password do not match.")]
+        [Compare("Password", ErrorMessage = "The password and confirmation Password do not match.")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
     }

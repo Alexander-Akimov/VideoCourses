@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using VOD.Admin.Models;
 using VOD.Database.Services;
 using VOD.Domain.DTOModles.Admin;
 
@@ -13,7 +14,7 @@ namespace VOD.Admin.Pages.Users
     [Authorize(Roles ="Admin")]
     public class IndexModel : PageModel
     {
-        public IEnumerable<UserDTO> Users = new List<UserDTO>();
+        public IEnumerable<UserDTO> Users { get; set; } = new List<UserDTO>();
         [TempData]
         public string Alert { get; set; }
 
