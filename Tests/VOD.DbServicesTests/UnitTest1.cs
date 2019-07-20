@@ -44,13 +44,21 @@ namespace VOD.DbServicesTests
         }
 
         [Fact]
-        public async void GetCoursesDbReadService()//bad query
+        public async void GetCoursesDbReadService()
         {
             var userId = "25c705c0-76c8-4296-89d2-2128deb96280";
-            var courses = await _dbReadService.GetAsync<UserCourse>(uc => uc.UserId.Equals(userId), true);
+            var courses = await _dbReadService.GetAsync<UserCourse>(//bad query
+                expression: uc => uc.UserId.Equals(userId),
+                include: true);
 
-            courses.Select(uc => uc.Course).ToList();
+            // courses.Select(uc => uc.Course).ToList(); //this commented because include: true
+
+            var courses2 = _dbReadService.GetQueryAsync<UserCourse>()//compact query
+               .Where(uc => uc.UserId.Equals(userId))
+               .Select(c => c.Course);
         }
+
+
         [Fact]
         public async void GetVideosLinq()
         {
