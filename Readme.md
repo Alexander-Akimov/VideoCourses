@@ -4,6 +4,7 @@ TODO:
 	В репозитории вынести всё взаимодействие с БД.
 	В сервисы всю бизнес логику.
 3) Понять всю логику обновления сущностей.
+4) Optional: Создать базовый класс для всех сущностей(Entities).
 
 UserService.AddUserAsync()
 	Although not strictly necessary in this scenario, it could be vital
