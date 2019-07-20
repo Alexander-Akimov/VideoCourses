@@ -41,6 +41,9 @@ namespace VOD.Database.Services
 
         public async Task<IEnumerable<Course>> GetCoursesAsync(string userId)
         {
+            // var userId = "25c705c0-76c8-4296-89d2-2128deb96280";
+            // var courses1 = await _dbReadService.GetAsync<UserCourse>(uc => uc.UserId.Equals(userId), true);
+
             var courses = _dbReadService.GetQueryAsync<UserCourse>()
                 .Where(uc => uc.UserId.Equals(userId))
                 .Select(c => c.Course);

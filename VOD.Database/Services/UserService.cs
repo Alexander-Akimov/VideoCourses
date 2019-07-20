@@ -77,7 +77,9 @@ namespace VOD.Database.Services
 
         public async Task<bool> UpdateUserAsync(UserDTO user)
         {
-            //TODO: probably user is null exception
+            //check the user on null before go on
+            if (user == null) return false;
+
             var dbUser = await _dbContext.Users
                 .FirstOrDefaultAsync(u => u.Id == user.Id);
 
