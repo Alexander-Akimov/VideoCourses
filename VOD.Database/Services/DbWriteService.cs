@@ -32,7 +32,7 @@ namespace VOD.Database.Services
             {
                 _dbContext.Remove(entity);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw; // why do i need this? if so then why do we need try/catch?
             }
