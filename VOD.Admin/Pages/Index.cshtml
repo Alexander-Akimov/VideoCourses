@@ -7,7 +7,6 @@
 <br />
 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
-
     <div class="row">
         <div class="col-sm-8 offset-sm-2 col-md-6 offset-md-4">
             <partial name="_CardPartial" for="Cards.Instructors" />

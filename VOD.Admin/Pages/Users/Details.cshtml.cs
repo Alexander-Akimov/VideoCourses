@@ -79,7 +79,7 @@ namespace VOD.Admin.Pages.Users
 
             Courses = await _dbReadService.GetQueryAsync<UserCourse>()//produces compact sql query
                 .Where(uc => uc.UserId.Equals(userId))
-                .Select(c => c.Course)
+                .Select(uc => uc.Course)
                 .ToListAsync();
 
             var userCourseIds = Courses.Select(uc => uc.Id);
@@ -88,7 +88,6 @@ namespace VOD.Admin.Pages.Users
                 c => !userCourseIds.Contains(c.Id));
 
             AvailableCourses = availableCourses.ToSelectList("Id", "Title");
-
         }
     }
 }
