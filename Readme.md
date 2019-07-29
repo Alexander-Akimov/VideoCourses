@@ -7,6 +7,11 @@ TODO:
 	В сервисы всю бизнес логику.
 3) Понять всю логику обновления сущностей.
 4) Optional: Создать базовый класс для всех сущностей(Entities).
+Это позволит избавится от таких выражений как это: `(int)entity.GetType().GetProperty("Id").GetValue(entity);`
+
+ _dbWriteService.Add(entity);
+ await _dbWriteService.SaveChangesAsync();
+
 
 UserService.AddUserAsync()
 	Although not strictly necessary in this scenario, it could be vital

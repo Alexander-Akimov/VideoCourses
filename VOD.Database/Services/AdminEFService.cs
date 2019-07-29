@@ -20,9 +20,10 @@ namespace VOD.Database.Services
             _dbWriteService = dbWriteService;
             _mapper = mapper;
         }
+
         public async Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>> expression) where TEntity : class
         {
-            throw new NotImplementedException();
+            return await _dbReadService.AnyAsync(expression);
         }
 
         public async Task<int> CreateAsync<TSourse, TDestination>(TSourse item)
@@ -35,12 +36,10 @@ namespace VOD.Database.Services
                 _dbWriteService.Add(entity);
 
                 var succeeded = await _dbWriteService.SaveChangesAsync();
-                if (succeeded) return (int)entity.GetType().GetProperty("Id")
-                         .GetValue(entity);
+                if (succeeded)
+                    return (int)entity.GetType().GetProperty("Id").GetValue(entity);
             }
-            catch (Exception)
-            {
-            }
+            catch (Exception) { }
             return -1;
         }
 
@@ -59,6 +58,21 @@ namespace VOD.Database.Services
             {
                 return false;
             }
+        }
+
+        public async Task<bool> UpdateAsync<TSourse, TDestination>(TSourse item)
+            where TSourse : class
+            where TDestination : class
+        {
+            try
+            {
+                var entity = _mapper.Map<TDestination>(item);
+                _dbWriteService.Update(entity);
+
+                return await _dbWriteService.SaveChangesAsync();
+            }
+            catch (Exception) { }
+            return false;
         }
 
         public async Task<List<TDestination>> GetAsync<TSourse, TDestination>(bool include = false)
@@ -85,13 +99,6 @@ namespace VOD.Database.Services
         {
             var entity = await _dbReadService.SingleAsync<TSourse>(expression);
             return _mapper.Map<TDestination>(entity);
-        }
-
-        public async Task<bool> UpdateAsync<TSourse, TDestination>(TSourse item)
-            where TSourse : class
-            where TDestination : class
-        {
-            throw new NotImplementedException();
         }
     }
 }
