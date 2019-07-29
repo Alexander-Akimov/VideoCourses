@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
@@ -9,6 +10,16 @@ namespace VOD.Database.Services
 {
     public class AdminEFService : IAdminService
     {
+        private readonly IDbReadService _dbReadService;
+        private readonly IDbWriteService _dbWriteService;
+        private readonly IMapper _mapper;
+
+        public AdminEFService(IDbReadService dbReadService, IDbWriteService dbWriteService, IMapper mapper)
+        {
+            _dbReadService = dbReadService;
+            _dbWriteService = dbWriteService;
+            _mapper = mapper;
+        }
         public async Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>> expression) where TEntity : class
         {
             throw new NotImplementedException();
@@ -18,33 +29,62 @@ namespace VOD.Database.Services
             where TSourse : class
             where TDestination : class
         {
-            throw new NotImplementedException();
+            try
+            {
+                var entity = _mapper.Map<TDestination>(item);
+                _dbWriteService.Add(entity);
+
+                var succeeded = await _dbWriteService.SaveChangesAsync();
+                if (succeeded) return (int)entity.GetType().GetProperty("Id")
+                         .GetValue(entity);
+            }
+            catch (Exception)
+            {
+            }
+            return -1;
         }
 
         public async Task<bool> DeleteAsync<TSourse>(Expression<Func<TSourse, bool>> expression) where TSourse : class
         {
-            throw new NotImplementedException();
+            try
+            {
+                //TODO: TWO Queries to delete entity????
+                //_dbWriteService.Delete(new Entity{Id = })
+                var entity = await _dbReadService.SingleAsync<TSourse>(expression);
+                _dbWriteService.Delete(entity);
+
+                return await _dbWriteService.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public async Task<List<TDestination>> GetAsync<TSourse, TDestination>(bool include = false)
             where TSourse : class
             where TDestination : class
         {
-            throw new NotImplementedException();
+            /*if (include)
+                _dbReadService.Include<TSourse>();*/
+            var entities = await _dbReadService.GetAsync<TSourse>();
+            return _mapper.Map<List<TDestination>>(entities);
         }
 
         public async Task<List<TDestination>> GetAsync<TSourse, TDestination>(Expression<Func<TSourse, bool>> expression, bool include = false)
             where TSourse : class
             where TDestination : class
         {
-            throw new NotImplementedException();
+            var entities = await _dbReadService.GetAsync<TSourse>(expression);
+            return _mapper.Map<List<TDestination>>(entities);
         }
 
         public async Task<TDestination> SingleAsync<TSourse, TDestination>(Expression<Func<TSourse, bool>> expression, bool include = false)
             where TSourse : class
             where TDestination : class
         {
-            throw new NotImplementedException();
+            var entity = await _dbReadService.SingleAsync<TSourse>(expression);
+            return _mapper.Map<TDestination>(entity);
         }
 
         public async Task<bool> UpdateAsync<TSourse, TDestination>(TSourse item)
