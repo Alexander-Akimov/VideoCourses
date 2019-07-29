@@ -66,7 +66,7 @@ namespace VOD.Admin
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAdminService, AdminEFService>();
 
-            services.AddAutoMapper(typeof(Startup), typeof(Instructor))
+            services.AddAutoMapper(typeof(Startup), typeof(Instructor), typeof(Course), typeof(Module));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
