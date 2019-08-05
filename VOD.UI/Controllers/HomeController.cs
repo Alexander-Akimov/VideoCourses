@@ -16,7 +16,7 @@ namespace VOD.UI.Controllers
         private IUIReadService _uiReadService;
         private IDbReadService _dbReadService;
         private SignInManager<VODUser> _signInManager;
-        public HomeController(SignInManager<VODUser> signInMgr, 
+        public HomeController(SignInManager<VODUser> signInMgr,
             IUIReadService uiReadService,
             IDbReadService dbReadService)
         {
@@ -25,7 +25,8 @@ namespace VOD.UI.Controllers
             _dbReadService = dbReadService;
         }
 
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             // var courses = await _uiReadService.GetCoursesAsync("25c705c0-76c8-4296-89d2-2128deb96280");
             // var course = await _uiReadService.GetCourseAsync("25c705c0-76c8-4296-89d2-2128deb96280", 1);
@@ -36,7 +37,7 @@ namespace VOD.UI.Controllers
             //var courses = await _dbReadService.GetAsync<UserCourse>(uc => uc.UserId.Equals(userId), true);
             //courses.Select(uc => uc.Course).ToList();
 
-           
+
 
             if (!_signInManager.IsSignedIn(User))
                 return RedirectToPage("/Account/Login", new { Area = "Identity" });

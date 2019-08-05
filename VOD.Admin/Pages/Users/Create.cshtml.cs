@@ -25,10 +25,10 @@ namespace VOD.Admin.Pages.Users
         {
             _userService = userService;
         }
-        public async Task OnGetAsync()
+      /*  public async Task<IActionResult> OnGetAsync()
         {
-
-        }
+            return Page();
+        }*/
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
