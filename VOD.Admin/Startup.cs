@@ -17,6 +17,7 @@ using VOD.Domain.Entities;
 using VOD.Database.Services;
 using VOD.Common.Services;
 using AutoMapper;
+using VOD.Common.AutoMapper;
 
 namespace VOD.Admin
 {
@@ -66,7 +67,7 @@ namespace VOD.Admin
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAdminService, AdminEFService>();
 
-            services.AddAutoMapper(typeof(Startup), typeof(Instructor), typeof(Course), typeof(Module));
+            services.AddAutoMapper(typeof(MapProfile).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
