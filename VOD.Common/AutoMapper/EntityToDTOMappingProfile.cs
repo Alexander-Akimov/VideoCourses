@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using VOD.Domain.DTOModles.UI;
 using VOD.Domain.Entities;
 
-namespace VOD.UI.Mapping
+namespace VOD.Common.AutoMapper
 {
     public class EntityToDTOMappingProfile : Profile
     {

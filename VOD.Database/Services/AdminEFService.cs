@@ -71,7 +71,9 @@ namespace VOD.Database.Services
 
                 return await _dbWriteService.SaveChangesAsync();
             }
-            catch (Exception) { }
+            catch (Exception ex) {
+
+            }
             return false;
         }
 
@@ -81,7 +83,8 @@ namespace VOD.Database.Services
         {
             /*if (include)
                 _dbReadService.Include<TSourse>();*/
-            var entities = await _dbReadService.GetAsync<TSourse>();
+            var entities = await _dbReadService.GetAsync<TSourse>();            
+
             return _mapper.Map<List<TDestination>>(entities);
         }
 

@@ -9,6 +9,7 @@ using VOD.Common.Services;
 using VOD.Database.Services;
 using VOD.Domain.DTOModles.Admin;
 using VOD.Domain.Entities;
+using VOD.Common.Extensions;
 
 namespace VOD.Admin.Pages.Courses
 {
@@ -16,7 +17,7 @@ namespace VOD.Admin.Pages.Courses
     public class CreateModel : PageModel
     {
         [BindProperty]
-        public InstructorDTO Input { get; set; } = new InstructorDTO();
+        public CourseDTO Input { get; set; } = new CourseDTO();
 
         [TempData]
         public string Alert { get; set; }
@@ -26,23 +27,36 @@ namespace VOD.Admin.Pages.Courses
         {
             _adminService = adminService;
         }
-        /*  public async Task<IActionResult> OnGetAsync()
-          {
-              return Page();
-          }*/
+        public async Task<IActionResult> OnGetAsync()
+        {
+            try
+            {
+                ViewData["Instructors"] = (await _adminService.GetAsync<Instructor, InstructorDTO>())
+                    .ToSelectList("Id", "Name");
+                return Page();
+            }
+            catch
+            {
+                Alert = "You do not have access to this page.";
+                return RedirectToPage("/Index");
+            }
+
+        }
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
             {
-                var succeeded = (await _adminService.CreateAsync<InstructorDTO, Instructor>(Input)) > 0;
+                var succeeded = (await _adminService.CreateAsync<CourseDTO, Course>(Input)) > 0;
                 if (succeeded)
                 {
                     // Message sent back to the Index Razor Page.
-                    Alert = $"Created a new Instructor for {Input.Name}.";
+                    Alert = $"Created a new Course for {Input.Title}.";
                     return RedirectToPage("Index");
-                }                
+                }
             }
             // Something failed, redisplay the form.
+            ViewData["Instructors"] = (await _adminService.GetAsync<Instructor, InstructorDTO>())
+                    .ToSelectList("Id", "Name");
             return Page();
         }
     }

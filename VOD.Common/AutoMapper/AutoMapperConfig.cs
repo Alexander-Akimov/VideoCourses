@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace VOD.UI.Mapping
+namespace VOD.Common.AutoMapper
 {
-    internal static class AutoMapperConfig
+    public static class AutoMapperConfig
     {
         public static IMapper GetMapper()
         {

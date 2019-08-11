@@ -9,6 +9,7 @@ using VOD.Common.Services;
 using VOD.Database.Services;
 using VOD.Domain.DTOModles.Admin;
 using VOD.Domain.Entities;
+using VOD.Common.Extensions;
 
 namespace VOD.Admin.Pages.Courses
 {
@@ -16,7 +17,7 @@ namespace VOD.Admin.Pages.Courses
     public class EditModel : PageModel
     {
         [BindProperty]
-        public InstructorDTO Input { get; set; } = new InstructorDTO();
+        public CourseDTO Input { get; set; } = new CourseDTO();
 
         [TempData]
         public string Alert { get; set; }
@@ -32,7 +33,10 @@ namespace VOD.Admin.Pages.Courses
         {
             try
             {
-                Input = await _adminService.SingleAsync<Instructor, InstructorDTO>(
+                Alert = String.Empty;
+                ViewData["Instructors"] = (await _adminService.GetAsync<Instructor, InstructorDTO>())
+                    .ToSelectList("Id", "Name");
+                Input = await _adminService.SingleAsync<Course, CourseDTO>(
                     instr => instr.Id.Equals(id));
 
                 return Page();
@@ -48,13 +52,15 @@ namespace VOD.Admin.Pages.Courses
         {
             if (ModelState.IsValid)
             {
-                var succeeded = await _adminService.UpdateAsync<InstructorDTO, Instructor>(Input);
+                var succeeded = await _adminService.UpdateAsync<CourseDTO, Course>(Input);
                 if (succeeded)
                 {
-                    Alert = $"Updated Instructor: {Input.Name}.";
+                    Alert = $"Updated Course: {Input.Title}.";                   
                     return RedirectToPage("Index");
                 }                
             }
+            ViewData["Instructors"] = (await _adminService.GetAsync<Instructor, InstructorDTO>())
+                   .ToSelectList("Id", "Name");
             return Page();
         }
     }

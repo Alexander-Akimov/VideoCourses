@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using VOD.Common.Services;
 using VOD.Database.Services;
 using VOD.Domain.DTOModles.Admin;
-using VOD.Domain.Entities;
 
 namespace VOD.Admin.Pages.Courses
 {
@@ -13,24 +12,23 @@ namespace VOD.Admin.Pages.Courses
     public class DeleteModel : PageModel
     {
         [BindProperty]
-        public InstructorDTO Input { get; set; } = new InstructorDTO();
+        public CourseDTO Input { get; set; } = new CourseDTO();
 
         [TempData]
         public string Alert { get; set; }
 
-        private readonly IAdminService _adminService;
+        private readonly IAdminCoursesService _adminCoursesService;
 
-        public DeleteModel(IAdminService adminService)
+        public DeleteModel(IAdminCoursesService adminCoursesService)
         {
-            _adminService = adminService;
+            _adminCoursesService = adminCoursesService;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
             try
             {
-                Input = await _adminService.SingleAsync<Instructor, InstructorDTO>(
-                    instr => instr.Id.Equals(id));
+                Input = await _adminCoursesService.SingleAsync(id);
                 return Page();
             }
             catch //(Exception)
@@ -45,18 +43,16 @@ namespace VOD.Admin.Pages.Courses
             var id = Input.Id;
             if (ModelState.IsValid)
             {
-                var succeeded = await _adminService.DeleteAsync<Instructor>(
-                    d => d.Equals(id));
+                var succeeded = await _adminCoursesService.DeleteAsync(id);
                 if (succeeded)
                 {
                     // Message sent back to the Index Razor Page.
-                    Alert = $"Deleted Instructor: {Input.Name}.";
+                    Alert = $"Deleted Course: {Input.Title}.";
                     return RedirectToPage("Index");
                 }
             }
             // Something failed, redisplay the form.
-            Input = await _adminService.SingleAsync<Instructor, InstructorDTO>(
-                    instr => instr.Id.Equals(id));
+            Input = await _adminCoursesService.SingleAsync(id);
             return Page();
         }
     }

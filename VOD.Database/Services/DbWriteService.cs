@@ -41,7 +41,7 @@ namespace VOD.Database.Services
         {
             try
             {
-                var entityObj = _dbContext.Find<TEntity>(entity.GetType().GetProperty("id").GetValue(entity));
+                var entityObj = _dbContext.Find<TEntity>(entity.GetType().GetProperty("Id").GetValue(entity));
                 if (entityObj != null)
                     _dbContext.Entry(entityObj).State = //do this to be able to update the entity
                         EntityState.Detached; //found entity isn’t tracked now

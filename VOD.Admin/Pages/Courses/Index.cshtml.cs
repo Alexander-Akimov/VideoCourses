@@ -20,8 +20,8 @@ namespace VOD.Admin.Pages.Courses
         [TempData]
         public string Alert { get; set; }
 
-        private readonly IAdminService _adminService;
-        public IndexModel(IAdminService adminService)
+        private readonly IAdminCoursesService _adminService;
+        public IndexModel(IAdminCoursesService adminService)
         {
             _adminService = adminService;
         }
@@ -29,7 +29,7 @@ namespace VOD.Admin.Pages.Courses
         {
             try
             {
-                Items = await _adminService.GetAsync<Course, CourseDTO>(true);
+                Items = await _adminService.GetAsync(true);
                 return Page();
             }
             catch// (Exception)
@@ -37,7 +37,6 @@ namespace VOD.Admin.Pages.Courses
                 Alert = "You do not have access to this page.";
                 return RedirectToPage("/Index");
             }
-
         }
     }
 }

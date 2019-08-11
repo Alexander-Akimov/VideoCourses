@@ -66,6 +66,7 @@ namespace VOD.Admin
             services.AddScoped<IDbWriteService, DbWriteService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAdminService, AdminEFService>();
+            services.AddScoped<IAdminCoursesService, AdminCoursesService>();
 
             services.AddAutoMapper(typeof(MapProfile).Assembly);
         }

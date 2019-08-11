@@ -17,7 +17,7 @@ using VOD.Database;
 using VOD.Database.Services;
 using VOD.Domain.DTOModles.UI;
 using AutoMapper;
-using VOD.UI.Mapping;
+using VOD.Common.AutoMapper;
 
 namespace VOD.UI
 {
