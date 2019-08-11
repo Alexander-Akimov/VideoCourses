@@ -1,0 +1,41 @@
+﻿@page
+@model DeleteModel
+@inject SignInManager<VODUser> SignInManager
+@{
+    ViewData["Title"] = "Delete Instructor";
+}
+
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1>@ViewData["Title"]</h1>
+            <partial name="_DeletePageButtonsPartial" model="@Model.Input.ButtonDTO"/>
+            <hr />
+            <dl class="row">
+                <dt class="col-md-2"><label asp-for="Input.Id"></label></dt>
+                <dd class="col-md-10">@Model.Input.Id</dd>
+
+                <dt class="col-md-2"><label asp-for="Input.Name"></label></dt>
+                <dd class="col-md-10">@Model.Input.Name</dd>
+
+                <dt class="col-md-2"><label asp-for="Input.Description"></label></dt>
+                <dd class="col-md-10">@Model.Input.Description</dd>
+                
+                <dt class="col-md-2"><label asp-for="Input.Thumbnail"></label></dt>
+                <dd class="col-md-10">@Model.Input.Thumbnail</dd>
+            </dl>
+            <form method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input type="hidden" asp-for="Input.Id" />
+                <input type="hidden" asp-for="Input.Name" />
+
+                <button type="submit" class="btn btn-success">Delete</button>
+            </form>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -19,6 +19,8 @@ namespace VOD.Admin.Pages
         public (CardViewModel Instructors, CardViewModel Users,
             CardViewModel Courses, CardViewModel Modules,
             CardViewModel Videos, CardViewModel Downloads) Cards;
+        [TempData]
+        public string Alert { get; set; }
 
         private readonly IDbReadService _dbReadService;
         public IndexModel(IDbReadService dbReadService)

@@ -1,0 +1,45 @@
+﻿@page
+@model IndexModel
+@inject SignInManager<VODUser> SignInManager
+@{
+    ViewData["Title"] = "Instructors";
+}
+
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <div class="row">
+        <div class="col-md-10 offset-md-1" style="padding-left:0; padding-right:0;">
+            <alert alert-type="success">@Model.Alert</alert>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <h1>@ViewData["Title"]</h1>
+            <partial name="_PageButtonsPartial" />
+            <table class="table" style="margin-top:20px;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var instructor in @Model.Items)
+                    {
+                        <tr>
+                            <td>@instructor.Name</td>
+                            <td>@instructor.Description</td>
+                            <td style="min-width:100px;">
+                                <partial name="_TableRowButtonsPartial"
+                                         model="@instructor.ButtonDTO" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+}

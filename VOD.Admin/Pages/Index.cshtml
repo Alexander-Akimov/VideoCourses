@@ -5,6 +5,12 @@
     ViewData["Title"] = "Dashboard";
 }
 <br />
+<div class="row">
+    <div class="col-md-8 offset-md-2" style="padding-left:0; padding-right:0;">
+        <alert alert-type="success">@Model.Alert</alert>
+    </div>
+    <div class="col-md-2"></div>
+</div>
 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
     <div class="row">
