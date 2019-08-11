@@ -18,19 +18,19 @@ namespace VOD.Database.Services
 
         public async Task<Course> GetCourseAsync(string userId, int courseId) // produces two simple sql queries
         {
-            await _dbReadService.GetQueryAsync<Module>() // load course's modules
+            await _dbReadService.GetQuery<Module>() // load course's modules
                 .Where(c => c.CourseId.Equals(courseId))
                 .LoadAsync();
 
-            await _dbReadService.GetQueryAsync<Video>() // load course's videos
+            await _dbReadService.GetQuery<Video>() // load course's videos
                 .Where(v => v.CourseId.Equals(courseId))
                 .LoadAsync();
 
-            await _dbReadService.GetQueryAsync<Download>() // load course's Downloads
+            await _dbReadService.GetQuery<Download>() // load course's Downloads
                 .Where(v => v.CourseId.Equals(courseId))
                 .LoadAsync();
 
-            var userCourse = await _dbReadService.GetQueryAsync<UserCourse>() // one row sql query result
+            var userCourse = await _dbReadService.GetQuery<UserCourse>() // one row sql query result
                 .Where(uc => uc.UserId.Equals(userId) && uc.CourseId.Equals(courseId))
                 .Include(c => c.Course) // load course
                 .ThenInclude(c => c.Instructor)  // load course's instructor
@@ -44,7 +44,7 @@ namespace VOD.Database.Services
             // var userId = "25c705c0-76c8-4296-89d2-2128deb96280";
             // var courses1 = await _dbReadService.GetAsync<UserCourse>(uc => uc.UserId.Equals(userId), true);
 
-            var courses = _dbReadService.GetQueryAsync<UserCourse>()
+            var courses = _dbReadService.GetQuery<UserCourse>()
                 .Where(uc => uc.UserId.Equals(userId))
                 .Select(c => c.Course);
 
@@ -73,7 +73,7 @@ namespace VOD.Database.Services
                c => c.UserId.Equals(userId) && c.CourseId.Equals(module.CourseId));
             if (userCourse == null) return default;
 
-            var videos = await _dbReadService.GetQueryAsync<Video>()
+            var videos = await _dbReadService.GetQuery<Video>()
                  .Where(v => v.ModuleId == module.Id)
                  .ToListAsync();
 

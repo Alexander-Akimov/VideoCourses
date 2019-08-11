@@ -39,7 +39,7 @@ namespace VOD.DbServicesTests
                             include: true);      */
 
             var courseId = 1;
-            await _dbReadService.GetQueryAsync<Course>(c => c.Id.Equals(courseId))
+            await _dbReadService.GetQuery<Course>(c => c.Id.Equals(courseId))
                           .Select(c => c.Instructor).LoadAsync(); // load course's instructor
         }
 
@@ -53,7 +53,7 @@ namespace VOD.DbServicesTests
 
             // courses.Select(uc => uc.Course).ToList(); //this commented because include: true
 
-            var courses2 = _dbReadService.GetQueryAsync<UserCourse>()//compact query
+            var courses2 = _dbReadService.GetQuery<UserCourse>()//compact query
                .Where(uc => uc.UserId.Equals(userId))
                .Select(c => c.Course);
         }
@@ -65,13 +65,13 @@ namespace VOD.DbServicesTests
             string userId = "25c705c0-76c8-4296-89d2-2128deb96280";
             int moduleId = 1;
 
-            var videosQuery = _dbReadService.GetQueryAsync<UserCourse>()
-                .Join(_dbReadService.GetQueryAsync<Course>(),
+            var videosQuery = _dbReadService.GetQuery<UserCourse>()
+                .Join(_dbReadService.GetQuery<Course>(),
                     uc => uc.CourseId,
                     c => c.Id,
                     (uc, c) => new { c.Id, uc.UserId }
                 )
-                .Join(_dbReadService.GetQueryAsync<Video>(),
+                .Join(_dbReadService.GetQuery<Video>(),
                     ce => ce.Id,
                     video => video.CourseId,
                     (ce, video) => new { ce, video }
@@ -87,9 +87,9 @@ namespace VOD.DbServicesTests
             string userId = "25c705c0-76c8-4296-89d2-2128deb96280";
             int moduleId = 1;
 
-            var videosQuery = from v in _dbReadService.GetQueryAsync<Video>()
-                              join c in _dbReadService.GetQueryAsync<Course>() on v.CourseId equals c.Id
-                              join uc in _dbReadService.GetQueryAsync<UserCourse>() on c.Id equals uc.CourseId
+            var videosQuery = from v in _dbReadService.GetQuery<Video>()
+                              join c in _dbReadService.GetQuery<Course>() on v.CourseId equals c.Id
+                              join uc in _dbReadService.GetQuery<UserCourse>() on c.Id equals uc.CourseId
                               where v.ModuleId == moduleId && uc.UserId == userId
                               select v;
 
@@ -108,7 +108,7 @@ namespace VOD.DbServicesTests
                c => c.UserId.Equals(userId) && c.CourseId.Equals(module.CourseId));
             if (userCourse == null) return;
 
-            var videos = await _dbReadService.GetQueryAsync<Video>()
+            var videos = await _dbReadService.GetQuery<Video>()
                  .Where(v => v.ModuleId == module.Id)
                  .ToListAsync();
         }

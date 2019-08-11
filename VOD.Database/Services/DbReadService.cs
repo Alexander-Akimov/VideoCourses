@@ -22,7 +22,7 @@ namespace VOD.Database.Services
             return await _dBContext.Set<TEntity>().AnyAsync(expression);
         }
 
-        public IQueryable<TEntity> GetQueryAsync<TEntity>(Expression<Func<TEntity, bool>> expression = null, bool include = false) where TEntity : class
+        public IQueryable<TEntity> GetQuery<TEntity>(Expression<Func<TEntity, bool>> expression = null, bool include = false) where TEntity : class
         {
             var items = _dBContext.Set<TEntity>().AsQueryable();
             if (include)

@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Threading.Tasks;
 using VOD.Database.Services;
 using VOD.Domain.DTOModles.Admin;
 
@@ -41,7 +38,7 @@ namespace VOD.Admin.Pages.Users
                 {
                     Alert = $"User {Input.Email} was deleted.";
                     return RedirectToPage("Index");
-                }                
+                }
             }
             return Page();
         }

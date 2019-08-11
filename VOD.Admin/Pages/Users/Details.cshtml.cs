@@ -77,7 +77,7 @@ namespace VOD.Admin.Pages.Users
             var user = await _dbReadService.SingleAsync<VODUser>(u => u.Id.Equals(userId));
             Customer = new UserDTO { Id = user.Id, Email = user.Email };
 
-            Courses = await _dbReadService.GetQueryAsync<UserCourse>()//produces compact sql query
+            Courses = await _dbReadService.GetQuery<UserCourse>()//produces compact sql query
                 .Where(uc => uc.UserId.Equals(userId))
                 .Select(uc => uc.Course)
                 .ToListAsync();
