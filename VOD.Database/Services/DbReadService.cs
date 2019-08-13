@@ -33,6 +33,15 @@ namespace VOD.Database.Services
 
             return items;
         }
+        public async Task<List<TEntity>> GetAsync<TEntity>(Expression<Func<TEntity, object>> include = null) where TEntity : class
+        {
+            var items = _dBContext.Set<TEntity>().AsQueryable();
+
+            if (include != null)
+                items = items.Include(include);
+
+            return await items.ToListAsync();
+        }
 
         public async Task<List<TEntity>> GetAsync<TEntity>(Expression<Func<TEntity, bool>> expression = null, bool include = false) where TEntity : class
         {
