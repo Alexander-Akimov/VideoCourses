@@ -90,11 +90,11 @@ namespace VOD.Database.Services
         }
 
         public async Task<List<TDestination>> GetAsync<TSourse, TDestination>(
-            Expression<Func<TSourse, object>> navPropertyPath)
+            params Expression<Func<TSourse, object>>[] navPropPaths)
             where TSourse : class
             where TDestination : class
         {
-            var entities = await _dbReadService.GetAsync<TSourse>(navPropertyPath);
+            var entities = await _dbReadService.GetAsync<TSourse>(navPropPaths);
 
             return _mapper.Map<List<TDestination>>(entities);
         }
@@ -103,7 +103,7 @@ namespace VOD.Database.Services
             where TSourse : class
             where TDestination : class
         {
-            var entities = await _dbReadService.GetAsync<TSourse>(expression);
+            var entities = await _dbReadService.GetAsync<TSourse>(expression, include);
             return _mapper.Map<List<TDestination>>(entities);
         }
 
@@ -111,7 +111,7 @@ namespace VOD.Database.Services
             where TSourse : class
             where TDestination : class
         {
-            var entity = await _dbReadService.SingleAsync<TSourse>(expression);
+            var entity = await _dbReadService.SingleAsync<TSourse>(expression, include);
             return _mapper.Map<TDestination>(entity);
         }
     }
