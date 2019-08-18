@@ -7,9 +7,9 @@ using VOD.Domain.Entities;
 
 namespace VOD.Common.AutoMapper
 {
-    public class MapProfile : Profile
+    public class AdminMappingProfile : Profile
     {
-        public MapProfile()
+        public AdminMappingProfile()
         {
             CreateMap<Video, VideoDTO>()
                 .ForMember(d => d.Module, a => a.MapFrom(c => c.Module.Title))
