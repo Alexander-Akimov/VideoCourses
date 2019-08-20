@@ -9,6 +9,8 @@ namespace VOD.Database.Services
 {
     public interface IDbReadService
     {
+        Task<TEntity> SingleAsync<TEntity>(Expression<Func<TEntity, bool>> expression = null,
+            params Expression<Func<TEntity, object>>[] includeProps) where TEntity : class;
         IQueryable<TEntity> GetQuery<TEntity>(Expression<Func<TEntity, bool>> expression = null, bool include = false) where TEntity : class;
         Task<List<TEntity>> GetAsync<TEntity>(params Expression<Func<TEntity, object>>[] includeProps) where TEntity : class;
         Task<List<TEntity>> GetAsync<TEntity>(Expression<Func<TEntity, bool>> expression = null, bool include = false) where TEntity : class;
