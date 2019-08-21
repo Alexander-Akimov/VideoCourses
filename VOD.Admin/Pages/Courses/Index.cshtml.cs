@@ -20,8 +20,8 @@ namespace VOD.Admin.Pages.Courses
         [TempData]
         public string Alert { get; set; }
 
-        private readonly IAdminCoursesService _adminService;
-        public IndexModel(IAdminCoursesService adminService)
+        private readonly IAdminService _adminService;
+        public IndexModel(IAdminService adminService)
         {
             _adminService = adminService;
         }
@@ -29,7 +29,7 @@ namespace VOD.Admin.Pages.Courses
         {
             try
             {
-                Items = await _adminService.GetAsync(true);
+                Items = await _adminService.GetAsync<Course, CourseDTO>(c => c.Instructor);
                 return Page();
             }
             catch// (Exception)

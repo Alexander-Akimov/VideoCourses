@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using VOD.Common.Services;
 using VOD.Database.Services;
 using VOD.Domain.DTOModles.Admin;
+using VOD.Domain.Entities;
 
 namespace VOD.Admin.Pages.Courses
 {
@@ -17,18 +18,18 @@ namespace VOD.Admin.Pages.Courses
         [TempData]
         public string Alert { get; set; }
 
-        private readonly IAdminCoursesService _adminCoursesService;
+        private readonly IAdminService _adminService;
 
-        public DeleteModel(IAdminCoursesService adminCoursesService)
+        public DeleteModel(IAdminService adminService)
         {
-            _adminCoursesService = adminCoursesService;
+            _adminService = adminService;
         }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
             try
             {
-                Input = await _adminCoursesService.SingleAsync(id);
+                Input = await _adminService.SingleAsync<Course, CourseDTO>(c => c.Id.Equals(id), c => c.Instructor);
                 return Page();
             }
             catch //(Exception)
@@ -43,7 +44,7 @@ namespace VOD.Admin.Pages.Courses
             var id = Input.Id;
             if (ModelState.IsValid)
             {
-                var succeeded = await _adminCoursesService.DeleteAsync(id);
+                var succeeded = await _adminService.DeleteAsync<Course>(c => c.Id.Equals(id));
                 if (succeeded)
                 {
                     // Message sent back to the Index Razor Page.
@@ -52,7 +53,7 @@ namespace VOD.Admin.Pages.Courses
                 }
             }
             // Something failed, redisplay the form.
-            Input = await _adminCoursesService.SingleAsync(id);
+            Input = await _adminService.SingleAsync<Course, CourseDTO>(c => c.Id.Equals(id), c => c.Instructor);
             return Page();
         }
     }
