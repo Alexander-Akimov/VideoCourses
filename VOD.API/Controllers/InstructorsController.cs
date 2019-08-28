@@ -36,7 +36,7 @@ namespace VOD.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Filure");
             }
         }
@@ -52,7 +52,7 @@ namespace VOD.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Filure");
             }
         }
@@ -74,7 +74,7 @@ namespace VOD.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to add the entity");
             }
         }
@@ -95,7 +95,7 @@ namespace VOD.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update the entity");
             }
             return BadRequest("Unable to update the entity");
@@ -114,7 +114,7 @@ namespace VOD.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete the entity");
             }
             return BadRequest("Failed to delete the entity");
