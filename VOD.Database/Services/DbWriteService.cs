@@ -56,14 +56,15 @@ namespace VOD.Database.Services
 
         public async Task<bool> SaveChangesAsync()
         {
-            try
+            return await _dbContext.SaveChangesAsync() >= 0;
+          /*  try
             {
-                return await _dbContext.SaveChangesAsync() >= 0;
+               
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
-            }
+            }*/
         }
     }
 }

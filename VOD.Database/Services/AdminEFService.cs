@@ -39,7 +39,9 @@ namespace VOD.Database.Services
                 if (succeeded)
                     return (int)entity.GetType().GetProperty("Id").GetValue(entity);
             }
-            catch (Exception) { }
+            catch (Exception ex ) {
+                throw ex;
+            }
             return -1;
         }
 

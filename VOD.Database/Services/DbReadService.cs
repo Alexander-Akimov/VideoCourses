@@ -37,8 +37,9 @@ namespace VOD.Database.Services
         {
             var items = _dBContext.Set<TEntity>().AsQueryable();
 
-            foreach (var prop in includeProps)
-                items = items.Include(prop);
+            if (includeProps != null)
+                foreach (var prop in includeProps)
+                    items = items.Include(prop);
 
             return await items.ToListAsync();
         }
@@ -48,8 +49,9 @@ namespace VOD.Database.Services
         {
             var items = _dBContext.Set<TEntity>().AsQueryable();
 
-            foreach (var prop in includeProps)
-                items = items.Include(prop);
+            if (includeProps != null)
+                foreach (var prop in includeProps)
+                    items = items.Include(prop);
 
             if (expression != null)
                 items = items.Where(expression);
