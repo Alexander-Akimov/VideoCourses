@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
 using VOD.Common.Services;
 using VOD.Domain.DTOModles.Admin;
 using VOD.Domain.Entities;
@@ -17,10 +18,12 @@ namespace VOD.API.Controllers
     {
         private readonly IAdminService _adminService;
         private readonly LinkGenerator _linkGenerator;
-        public CoursesController(IAdminService adminService, LinkGenerator linkGenerator)
+        private readonly ILogger _logger;
+        public CoursesController(IAdminService adminService, LinkGenerator linkGenerator, ILogger<CoursesController> logger)
         {
             this._adminService = adminService;
             this._linkGenerator = linkGenerator;
+            this._logger = logger;
         }
         [HttpGet]
         public async Task<ActionResult<List<CourseDTO>>> Get(bool include = false)
@@ -32,8 +35,8 @@ namespace VOD.API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Filure");
-                //TODO: log
             }
         }
 
@@ -47,8 +50,9 @@ namespace VOD.API.Controllers
                 if (dto == null) return NotFound();
                 return dto;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Database Filure");
             }
         }
@@ -73,8 +77,9 @@ namespace VOD.API.Controllers
 
                 return Created(uri, dto);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to add the entity");
             }
         }
@@ -96,8 +101,9 @@ namespace VOD.API.Controllers
                 if (await _adminService.UpdateAsync<CourseDTO, Course>(model))
                     return NoContent();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update the entity");
             }
             return BadRequest("Unable to update the entity");
@@ -114,8 +120,9 @@ namespace VOD.API.Controllers
                 if (await _adminService.DeleteAsync<Course>(d => d.Id.Equals(id)))
                     return NoContent();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete the entity");
             }
             return BadRequest("Failed to delete the entity");

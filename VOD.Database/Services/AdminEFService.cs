@@ -124,5 +124,13 @@ namespace VOD.Database.Services
             var entity = await _dbReadService.SingleAsync<TSourse>(expression, navPropPaths);
             return _mapper.Map<TDestination>(entity);
         }
+
+        public async Task<List<TDestination>> GetAsync<TSourse, TDestination>(Expression<Func<TSourse, bool>> expression, params Expression<Func<TSourse, object>>[] include)
+            where TSourse : class
+            where TDestination : class
+        {
+            var entities = await _dbReadService.GetAsync<TSourse>(expression, include);
+            return _mapper.Map<List<TDestination>>(entities);
+        }
     }
 }

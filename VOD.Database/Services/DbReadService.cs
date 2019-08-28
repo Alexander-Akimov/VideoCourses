@@ -58,7 +58,19 @@ namespace VOD.Database.Services
 
             return await items.SingleOrDefaultAsync();
         }
+        public async Task<List<TEntity>> GetAsync<TEntity>(Expression<Func<TEntity, bool>> expression, Expression<Func<TEntity, object>>[] includeProps) where TEntity : class
+        {
+            var items = _dBContext.Set<TEntity>().AsQueryable();           
 
+            if (includeProps != null)
+                foreach (var prop in includeProps)
+                    items = items.Include(prop);
+
+            if (expression != null)
+                items = items.Where(expression);
+
+            return await items.ToListAsync();
+        }
         public async Task<List<TEntity>> GetAsync<TEntity>(Expression<Func<TEntity, bool>> expression = null, bool include = false) where TEntity : class
         {
             var items = _dBContext.Set<TEntity>().AsQueryable();
@@ -135,5 +147,6 @@ namespace VOD.Database.Services
                  users: _dBContext.Users.Count());
         }
 
+       
     }
 }
