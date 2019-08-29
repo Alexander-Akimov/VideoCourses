@@ -30,7 +30,7 @@ namespace VOD.Admin.Pages.Downloads
             try
             {
                 Input = await _adminService.SingleAsync<Download, DownloadDTO>(
-                      expression: v => v.Id.Equals(id) && v.ModuleId.Equals(moduleId) && v.CourseId.Equals(courseId),
+                      whereExpr: v => v.Id.Equals(id) && v.ModuleId.Equals(moduleId) && v.CourseId.Equals(courseId),
                       include: true);
                 return Page();
             }
@@ -59,7 +59,7 @@ namespace VOD.Admin.Pages.Downloads
             }
             // Something failed, redisplay the form.
             Input = await _adminService.SingleAsync<Download, DownloadDTO>(
-                     expression: v => v.Id.Equals(id) && v.ModuleId.Equals(moduleId) && v.CourseId.Equals(courseId),
+                     whereExpr: v => v.Id.Equals(id) && v.ModuleId.Equals(moduleId) && v.CourseId.Equals(courseId),
                      include: true);
             return Page();
         }

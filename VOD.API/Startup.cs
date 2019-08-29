@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,6 +45,13 @@ namespace VOD.API
                 .AddEntityFrameworkStores<VODContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            /* services.AddMvc(options =>
+             {
+                 options.OutputFormatters.Insert(0, new XmlSerializerOutputFormatter());
+                 options.InputFormatters.Insert(0, new XmlSerializerInputFormatter(options));
+             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);*/
+
+            //services.AddMvc().AddXmlSerializerFormatters().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddAutoMapper(typeof(AdminMappingProfile));
             services.AddScoped<IDbReadService, DbReadService>();
