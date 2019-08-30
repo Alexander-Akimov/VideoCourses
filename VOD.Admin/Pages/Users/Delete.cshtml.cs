@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
-using VOD.Database.Services;
+
 using VOD.Domain.DTOModles.Admin;
+using VOD.Domain.Interfaces;
 
 namespace VOD.Admin.Pages.Users
 {

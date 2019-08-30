@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using VOD.Admin.Models;
-using VOD.Database.Services;
+
 using VOD.Domain.Entities;
+using VOD.Domain.Interfaces;
 
 namespace VOD.Admin.Pages
 {

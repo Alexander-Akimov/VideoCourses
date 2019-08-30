@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VOD.Domain.Entities;
 
-namespace VOD.Database.Services
+namespace VOD.Domain.Interfaces
 {
     public interface IUIReadService
     {

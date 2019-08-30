@@ -14,10 +14,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VOD.Database;
 using VOD.Domain.Entities;
-using VOD.Database.Services;
-using VOD.Common.Services;
 using AutoMapper;
 using VOD.Common.AutoMapper;
+using VOD.Domain.Interfaces;
+using VOD.Domain.Services;
 
 namespace VOD.Admin
 {

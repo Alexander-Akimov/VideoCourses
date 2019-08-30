@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using VOD.Database.Services;
+using VOD.Domain.Interfaces;
 using VOD.Domain.Entities;
 using Xunit;
 

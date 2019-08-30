@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using VOD.Database;
+using VOD.Domain.Interfaces;
 
-namespace VOD.Database.Services
+namespace VOD.Domain.Services
 {
     public class DbWriteService : IDbWriteService
     {

@@ -16,10 +16,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using VOD.Common.AutoMapper;
-using VOD.Common.Services;
 using VOD.Database;
-using VOD.Database.Services;
 using VOD.Domain.Entities;
+using VOD.Domain.Interfaces;
+using VOD.Domain.Services;
 
 namespace VOD.API
 {

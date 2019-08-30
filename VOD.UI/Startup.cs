@@ -14,10 +14,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VOD.Domain.Entities;
 using VOD.Database;
-using VOD.Database.Services;
 using VOD.Domain.DTOModles.UI;
 using AutoMapper;
 using VOD.Common.AutoMapper;
+using VOD.Domain.Interfaces;
+using VOD.Domain.Services;
 
 namespace VOD.UI
 {

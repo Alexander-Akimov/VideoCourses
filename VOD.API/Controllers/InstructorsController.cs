@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
-using VOD.Common.Services;
+using VOD.Domain.Interfaces;
 using VOD.Domain.DTOModles.Admin;
 using VOD.Domain.Entities;
 

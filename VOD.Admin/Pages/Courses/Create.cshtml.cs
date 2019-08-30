@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using VOD.Common.Services;
-using VOD.Database.Services;
 using VOD.Domain.DTOModles.Admin;
 using VOD.Domain.Entities;
 using VOD.Common.Extensions;
+using VOD.Domain.Interfaces;
 
 namespace VOD.Admin.Pages.Courses
 {

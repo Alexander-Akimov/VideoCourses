@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VOD.Domain.Entities;
+using VOD.Domain.Interfaces;
 
-namespace VOD.Database.Services
+namespace VOD.Domain.Services
 {
     public class UIReadService : IUIReadService
     {

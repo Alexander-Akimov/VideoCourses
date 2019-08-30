@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Linq.Expressions;
 using System.Linq;
 
-namespace VOD.Database.Services
+namespace VOD.Domain.Interfaces
 {
     public interface IDbReadService
     {

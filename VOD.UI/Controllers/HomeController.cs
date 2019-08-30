@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using VOD.UI.Models;
 using Microsoft.AspNetCore.Identity;
 using VOD.Domain.Entities;
-using VOD.Database.Services;
+using VOD.Domain.Interfaces;
 
 namespace VOD.UI.Controllers
 {

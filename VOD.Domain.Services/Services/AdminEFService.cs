@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using VOD.Common.Services;
+using VOD.Domain.Interfaces;
 
-namespace VOD.Database.Services
+namespace VOD.Domain.Services
 {
     public class AdminEFService : IAdminService
     {
@@ -56,7 +56,7 @@ namespace VOD.Database.Services
 
                 return await _dbWriteService.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }

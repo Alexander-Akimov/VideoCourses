@@ -5,8 +5,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using VOD.Database;
+using VOD.Domain.Interfaces;
 
-namespace VOD.Database.Services
+namespace VOD.Domain.Services
 {
 
     public class DbReadService : IDbReadService

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\VOD.Database\VOD.Database.csproj" />
+    <ProjectReference Include="..\..\VOD.Domain.Interfaces\VOD.Domain.Interfaces.csproj" />
     <ProjectReference Include="..\..\VOD.Domain\VOD.Domain.csproj" />
   </ItemGroup>
 

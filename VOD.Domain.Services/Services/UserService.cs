@@ -8,8 +8,10 @@ using VOD.Domain.Entities;
 using VOD.Common.Extensions;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using VOD.Domain.Interfaces;
+using VOD.Database;
 
-namespace VOD.Database.Services
+namespace VOD.Domain.Services
 {
     public class UserService : IUserService
     {

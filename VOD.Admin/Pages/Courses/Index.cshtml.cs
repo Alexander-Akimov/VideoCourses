@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using VOD.Admin.Models;
-using VOD.Common.Services;
-using VOD.Database.Services;
+using VOD.Domain.Interfaces;
+
 using VOD.Domain.DTOModles.Admin;
 using VOD.Domain.Entities;
 

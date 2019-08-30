@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VOD.Database;
-using VOD.Database.Services;
+using VOD.Domain.Interfaces;
 using VOD.Domain.DTOModles.UI;
 using VOD.Domain.Entities;
 using VOD.UI.Models.MembershipViewModels;

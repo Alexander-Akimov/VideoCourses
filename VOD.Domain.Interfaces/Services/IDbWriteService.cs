@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VOD.Database.Services
+namespace VOD.Domain.Interfaces
 {
     public interface IDbWriteService
     {
