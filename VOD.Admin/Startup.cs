@@ -18,6 +18,7 @@ using AutoMapper;
 using VOD.Common.AutoMapper;
 using VOD.Domain.Interfaces;
 using VOD.Domain.Services;
+using System.Net.Http;
 
 namespace VOD.Admin
 {
@@ -58,6 +59,17 @@ namespace VOD.Admin
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 1;
+            });
+
+            services.AddHttpClient("AdminClient", client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:6600");
+                client.Timeout = new TimeSpan(0, 0, 30);
+                client.DefaultRequestHeaders.Clear();
+            }).ConfigurePrimaryHttpMessageHandler(handler =>
+            new HttpClientHandler()
+            {
+                AutomaticDecompression = System.Net.DecompressionMethods.GZip
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

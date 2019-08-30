@@ -6,11 +6,14 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\VOD.Database\VOD.Database.csproj" />
     <ProjectReference Include="..\VOD.Domain.Interfaces\VOD.Domain.Interfaces.csproj" />
   </ItemGroup>
+
+
 
 </Project>
