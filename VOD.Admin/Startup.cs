@@ -19,6 +19,7 @@ using VOD.Common.AutoMapper;
 using VOD.Domain.Interfaces;
 using VOD.Domain.Services;
 using System.Net.Http;
+using VOD.Domain.Services.Services;
 
 namespace VOD.Admin
 {
@@ -77,7 +78,9 @@ namespace VOD.Admin
             services.AddScoped<IDbReadService, DbReadService>();
             services.AddScoped<IDbWriteService, DbWriteService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAdminService, AdminEFService>();
+            //services.AddScoped<IAdminService, AdminEFService>();
+            services.AddScoped<IAdminService, AdminAPIService>();
+            services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
             services.AddScoped<IAdminCoursesService, AdminCoursesService>();
 
             services.AddAutoMapper(typeof(AdminMappingProfile).Assembly);
