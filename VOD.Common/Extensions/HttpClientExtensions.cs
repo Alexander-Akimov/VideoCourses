@@ -37,6 +37,14 @@ namespace VOD.Common.Extensions
             return new StreamContent(memoryStream);
         }
 
+        private static async Task<HttpRequestMessage> CreateRequestContent<TRequest>(this HttpRequestMessage requestMessage, TRequest content)
+        {
+            requestMessage.Content = await content.SerializeRequestContentAsync();
+            requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            return requestMessage;
+        }
+        
+
         private static async Task<TResponse> DeserializeResponse<TResponse>(this HttpResponseMessage response)
         {
             response.EnsureSuccessStatusCode();
