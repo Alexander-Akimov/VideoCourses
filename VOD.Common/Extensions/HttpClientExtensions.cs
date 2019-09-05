@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using VOD.Common.Exceptions;
 
@@ -77,6 +78,27 @@ namespace VOD.Common.Extensions
             }
             else
                 response.EnsureSuccessStatusCode();
+        }
+
+        public static async Task<List<TResponse>> GetListAsync<TResponse>(this HttpClient httpClient,
+            string uri, CancellationToken cancellationToken, string token = "")
+        {
+            try
+            {
+                var requestMessage = uri.CreateRequestHeaders(HttpMethod.Get, token);
+                using (var response = await httpClient.SendAsync(requestMessage,
+                    HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    await response.CheckStatusCodes();
+
+                    return stream.ReadAndDeserializeFromJson<List<TResponse>>();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

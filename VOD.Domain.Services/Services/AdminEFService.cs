@@ -26,8 +26,8 @@ namespace VOD.Domain.Services
             return await _dbReadService.AnyAsync(expression);
         }
 
-        public async Task<int> CreateAsync<TSourse, TDestination>(TSourse item)
-            where TSourse : class
+        public async Task<int> CreateAsync<TSource, TDestination>(TSource item)
+            where TSource : class
             where TDestination : class
         {
             try
@@ -45,13 +45,13 @@ namespace VOD.Domain.Services
             return -1;
         }
 
-        public async Task<bool> DeleteAsync<TSourse>(Expression<Func<TSourse, bool>> expression) where TSourse : class
+        public async Task<bool> DeleteAsync<TSource>(Expression<Func<TSource, bool>> expression) where TSource : class
         {
             try
             {
                 //TODO: TWO Queries to delete entity????
                 //_dbWriteService.Delete(new Entity{Id = })
-                var entity = await _dbReadService.SingleAsync<TSourse>(expression);
+                var entity = await _dbReadService.SingleAsync<TSource>(expression);
                 _dbWriteService.Delete(entity);
 
                 return await _dbWriteService.SaveChangesAsync();
@@ -62,8 +62,8 @@ namespace VOD.Domain.Services
             }
         }
 
-        public async Task<bool> UpdateAsync<TSourse, TDestination>(TSourse item)
-            where TSourse : class
+        public async Task<bool> UpdateAsync<TSource, TDestination>(TSource item)
+            where TSource : class
             where TDestination : class
         {
             try
@@ -80,56 +80,56 @@ namespace VOD.Domain.Services
             return false;
         }
 
-        public async Task<List<TDestination>> GetAsync<TSourse, TDestination>(bool include = false)
-            where TSourse : class
+        public async Task<List<TDestination>> GetAsync<TSource, TDestination>(bool include = false)
+            where TSource : class
             where TDestination : class
         {
             /*if (include)
-                _dbReadService.Include<TSourse>();*/
-            var entities = await _dbReadService.GetAsync<TSourse>();
+                _dbReadService.Include<TSource>();*/
+            var entities = await _dbReadService.GetAsync<TSource>();
 
             return _mapper.Map<List<TDestination>>(entities);
         }
 
-        public async Task<List<TDestination>> GetAsync<TSourse, TDestination>(
-            params Expression<Func<TSourse, object>>[] navPropPaths)
-            where TSourse : class
+        public async Task<List<TDestination>> GetAsync<TSource, TDestination>(
+            params Expression<Func<TSource, object>>[] navPropPaths)
+            where TSource : class
             where TDestination : class
         {
-            var entities = await _dbReadService.GetAsync<TSourse>(navPropPaths);
+            var entities = await _dbReadService.GetAsync<TSource>(navPropPaths);
 
             return _mapper.Map<List<TDestination>>(entities);
         }
 
-        public async Task<List<TDestination>> GetAsync<TSourse, TDestination>(Expression<Func<TSourse, bool>> expression, bool include = false)
-            where TSourse : class
+        public async Task<List<TDestination>> GetAsync<TSource, TDestination>(Expression<Func<TSource, bool>> expression, bool include = false)
+            where TSource : class
             where TDestination : class
         {
-            var entities = await _dbReadService.GetAsync<TSourse>(expression, include);
+            var entities = await _dbReadService.GetAsync<TSource>(expression, include);
             return _mapper.Map<List<TDestination>>(entities);
         }
 
-        public async Task<TDestination> SingleAsync<TSourse, TDestination>(Expression<Func<TSourse, bool>> expression, bool include = false)
-            where TSourse : class
+        public async Task<TDestination> SingleAsync<TSource, TDestination>(Expression<Func<TSource, bool>> expression, bool include = false)
+            where TSource : class
             where TDestination : class
         {
-            var entity = await _dbReadService.SingleAsync<TSourse>(expression, include);
+            var entity = await _dbReadService.SingleAsync<TSource>(expression, include);
             return _mapper.Map<TDestination>(entity);
         }
 
-        public async Task<TDestination> SingleAsync<TSourse, TDestination>(Expression<Func<TSourse, bool>> expression, params Expression<Func<TSourse, object>>[] navPropPaths)
-            where TSourse : class
+        public async Task<TDestination> SingleAsync<TSource, TDestination>(Expression<Func<TSource, bool>> expression, params Expression<Func<TSource, object>>[] navPropPaths)
+            where TSource : class
             where TDestination : class
         {
-            var entity = await _dbReadService.SingleAsync<TSourse>(expression, navPropPaths);
+            var entity = await _dbReadService.SingleAsync<TSource>(expression, navPropPaths);
             return _mapper.Map<TDestination>(entity);
         }
 
-        public async Task<List<TDestination>> GetAsync<TSourse, TDestination>(Expression<Func<TSourse, bool>> expression, params Expression<Func<TSourse, object>>[] include)
-            where TSourse : class
+        public async Task<List<TDestination>> GetAsync<TSource, TDestination>(Expression<Func<TSource, bool>> expression, params Expression<Func<TSource, object>>[] include)
+            where TSource : class
             where TDestination : class
         {
-            var entities = await _dbReadService.GetAsync<TSourse>(expression, include);
+            var entities = await _dbReadService.GetAsync<TSource>(expression, include);
             return _mapper.Map<List<TDestination>>(entities);
         }
     }

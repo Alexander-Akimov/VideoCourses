@@ -28,7 +28,7 @@ namespace VOD.Domain.Services
         public async Task<List<CourseDTO>> GetAsync(bool include = false)
         {
             //if (include)               
-            //var entities = await _dbReadService.GetAsync<TSourse>();
+            //var entities = await _dbReadService.GetAsync<TSource>();
             var courses = await _dbReadService.GetQuery<Course>()
                 .Include(c => c.Instructor)
                 .ToListAsync();
