@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using VOD.API.Services;
 using VOD.Common.AutoMapper;
 using VOD.Database;
 using VOD.Domain.Entities;
@@ -58,6 +59,7 @@ namespace VOD.API
             services.AddScoped<IDbWriteService, DbWriteService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAdminService, AdminEFService>();
+            services.AddTransient<ITokenService, TokenService>();
 
         }
 

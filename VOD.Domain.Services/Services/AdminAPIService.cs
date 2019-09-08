@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using VOD.Common.Constants;
 using VOD.Domain.Interfaces;
 
 namespace VOD.Domain.Services.Services
@@ -57,7 +59,7 @@ namespace VOD.Domain.Services.Services
                 GetProperties<TSource>();
                 string uri = FormatUriWithoutIds<TSource>();
 
-                return await _http.GetListAsync<TDestination>($"{uri}?include={include.ToString()}", "AdminClient");
+                return await _http.GetListAsync<TDestination>($"{uri}?include={include.ToString()}", AppConstants.HttpClientName);
             }
             catch (Exception)
             {
@@ -76,6 +78,8 @@ namespace VOD.Domain.Services.Services
             where TSource : class
             where TDestination : class
         {
+
+
             throw new NotImplementedException();
         }
 
@@ -117,11 +121,27 @@ namespace VOD.Domain.Services.Services
             bool succeded = _properties.TryGetValue("courseId", out courseId);
             if (succeded)
                 uri = $"{uri}/courses/0";
+
             succeded = _properties.TryGetValue("moduleId", out moduleId);
             if (succeded)
                 uri = $"{uri}/modules/0";
+
             uri = $"{uri}/{typeof(TSource).Name}s"; //$"{nameof(TSource)}s";
             return uri;
+        }
+
+        private void GetExpressionProperties(Expression expression)
+        {
+            var body = (MethodCallExpression)expression;
+            var argument = body.Arguments[0];
+            if (argument is MemberExpression)
+            {
+                var memberExpression = argument as MemberExpression;
+                var value = ((FieldInfo)memberExpression.Member).GetValue(
+                    ((ConstantExpression)memberExpression.Expression).Value);
+
+                _properties.Add(memberExpression.Member.Name, value);
+            }
         }
     }
 }

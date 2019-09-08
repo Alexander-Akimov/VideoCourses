@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +20,8 @@ using VOD.Domain.Interfaces;
 using VOD.Domain.Services;
 using System.Net.Http;
 using VOD.Domain.Services.Services;
+using VOD.Common;
+using VOD.Common.Constants;
 
 namespace VOD.Admin
 {
@@ -62,9 +64,9 @@ namespace VOD.Admin
                 options.Password.RequiredUniqueChars = 1;
             });
 
-            services.AddHttpClient("AdminClient", client =>
+            services.AddHttpClient(AppConstants.HttpClientName, client =>
             {
-                client.BaseAddress = new Uri("http://localhost:6600");
+                client.BaseAddress = new Uri("http://localhost:6600"); //TODO: move to configuration
                 client.Timeout = new TimeSpan(0, 0, 30);
                 client.DefaultRequestHeaders.Clear();
             }).ConfigurePrimaryHttpMessageHandler(handler =>
