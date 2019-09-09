@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -54,7 +55,7 @@ namespace VOD.API.Services
                 var user = await _userService.GetUserAsync(loginUserDTO, true);
                 if (user == null)
                     throw new UnauthorizedAccessException();
-                if(!userId.Equals(user.Id))
+                if (!userId.Equals(user.Id))
                     throw new UnauthorizedAccessException();
 
                 return new TokenDTO(user.Token, user.TokenExpires);
@@ -82,6 +83,10 @@ namespace VOD.API.Services
         {
             try
             {
+                // The same secret key that was used to create the token must
+                // be hashed with the same algorithm and added to the configuration to ensure that the token is valid.
+                // A-Very-Long-And-SeCuRe-StrInG
+                //var signingKey = Encoding.UTF8.GetBytes(_configuration["Jwt:SigningSecret"]);
                 var signingKey = Convert.FromBase64String(_configuration["Jwt:SigningSecret"]);
                 var credentials = new SigningCredentials(
                     new SymmetricSecurityKey(signingKey),

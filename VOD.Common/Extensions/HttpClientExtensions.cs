@@ -95,9 +95,9 @@ namespace VOD.Common.Extensions
                     return stream.ReadAndDeserializeFromJson<List<TResponse>>();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
     }

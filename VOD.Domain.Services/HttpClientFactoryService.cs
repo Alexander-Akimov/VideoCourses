@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using VOD.Common.Exceptions;
 using VOD.Common.Extensions;
+using VOD.Domain.DTOModles;
+using VOD.Domain.DTOModles.Admin;
 using VOD.Domain.Interfaces;
 
 namespace VOD.Domain.Services
@@ -35,9 +37,26 @@ namespace VOD.Domain.Services
 
                 return await httpClient.GetListAsync<TResponse>(uri, _cancellationToken, token);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
+            }
+        }
+
+        public async Task<TokenDTO> CreateTokenAsync(LoginUserDTO user, string uri, string serviceName, string token = "")
+        {
+            try
+            {
+                if (new string[] { uri, serviceName }.IsNullOrEmptyOrWhiteSpace())
+                    throw new HttpResponseException(HttpStatusCode.NotFound, "Could not find the resource");
+
+                var httpClient = _httpClientFactory.CreateClient(serviceName);
+                throw new NotImplementedException();
+                //return ;//await httpClient.GetListAsync<TResponse>(uri, _cancellationToken, token);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

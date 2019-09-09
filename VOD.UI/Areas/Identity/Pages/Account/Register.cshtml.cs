@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using VOD.Common.Constants;
 using VOD.Domain.Entities;
 
 namespace VOD.UI.Areas.Identity.Pages.Account
@@ -72,6 +74,10 @@ namespace VOD.UI.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    var identityResult = await _userManager.AddClaimAsync(user, new Claim(Roles.VODUser, "true"));
+                    if (identityResult.Succeeded)
+                        _logger.LogInformation("Added the VODUser Claim to the User.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(

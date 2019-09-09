@@ -6,6 +6,9 @@ namespace VOD.Common.Constants
 {
     public static class Roles
     {
-        public static string Admin => "Admin";
+        public readonly static string Admin = nameof(Roles.Admin);
+       // public const string VODUSER = "VODUser";
+        //public static string Admin => ADMIN;
+        public static string VODUser => nameof(VODUser);
     }
 }

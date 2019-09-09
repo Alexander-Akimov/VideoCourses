@@ -186,7 +186,7 @@ namespace VOD.Domain.Services
                     loginUser.PasswordHash.IsNullOrEmptyOrWhiteSpace())
                     return null;
 
-                if (loginUser.Password.Length > 0)
+                if (loginUser.Password?.Length > 0)
                 {
                     var password = _userManager.PasswordHasher
                         .VerifyHashedPassword(user, user.PasswordHash, loginUser.Password);
@@ -204,7 +204,7 @@ namespace VOD.Domain.Services
 
                 return user;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;//why do we need it???
             }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +9,7 @@ using VOD.Domain.Interfaces;
 
 using VOD.Domain.DTOModles.Admin;
 using VOD.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace VOD.Admin.Pages.Instructors
 {
@@ -31,13 +32,13 @@ namespace VOD.Admin.Pages.Instructors
         public async Task<IActionResult> OnGetAsync(int id)
         {
             try
-            {
+            {               
                 Input = await _adminService.SingleAsync<Instructor, InstructorDTO>(
                     instr => instr.Id.Equals(id));
 
                 return Page();
             }
-            catch// (Exception)
+            catch (Exception ex)
             {
                 Alert = "You do not have access to this page.";
                 return RedirectToPage("/Index");

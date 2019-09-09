@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VOD.Common.Constants;
+using VOD.Domain.Entities;
 using VOD.Domain.Interfaces;
 
 namespace VOD.Domain.Services.Services
@@ -61,9 +62,9 @@ namespace VOD.Domain.Services.Services
 
                 return await _http.GetListAsync<TDestination>($"{uri}?include={include.ToString()}", AppConstants.HttpClientName);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -74,13 +75,21 @@ namespace VOD.Domain.Services.Services
             throw new NotImplementedException();
         }
 
-        public Task<TDestination> SingleAsync<TSource, TDestination>(Expression<Func<TSource, bool>> whereExpr, bool include = false)
+        public async Task<TDestination> SingleAsync<TSource, TDestination>(Expression<Func<TSource, bool>> whereExpr, bool include = false)
             where TSource : class
             where TDestination : class
         {
+            try
+            {
+                GetProperties(whereExpr);
 
-
-            throw new NotImplementedException();
+                string uri = FormatUriWithIds<TSource>();
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public Task<TDestination> SingleAsync<TSource, TDestination>(Expression<Func<TSource, bool>> whereExpr, params Expression<Func<TSource, object>>[] include)
@@ -112,6 +121,25 @@ namespace VOD.Domain.Services.Services
             if (courseId != null)
                 _properties.Add("courseId", 0);
         }
+        //GetProperties<Instructor>(instr => instr.Id == 3);
+        //GetProperties<Instructor>(instr => instr.Id.Equals(3));
+        //var id = 4;
+        //Expression<Func<Instructor, bool>> expr = param => param.Id.Equals(id);
+        private void GetProperties<TSource>(Expression<Func<TSource, bool>> expression)
+        {
+            try
+            {
+                var lambda = expression as LambdaExpression;
+
+                _properties.Clear();
+                ResolveExpression(lambda.Body);
+                var typeName = typeof(TSource).Name;
+
+                if (!typeName.Equals("Instructor") && !typeName.Equals("Course") && !_properties.ContainsKey("courseId"))
+                    _properties.Add("courseId", 0);
+            }
+            catch { throw; }
+        }
 
         private string FormatUriWithoutIds<TSource>()
         {
@@ -129,6 +157,84 @@ namespace VOD.Domain.Services.Services
             uri = $"{uri}/{typeof(TSource).Name}s"; //$"{nameof(TSource)}s";
             return uri;
         }
+        private string FormatUriWithIds<TSource>()
+        {
+            string uri = "api";
+            object id, moduleId, courseId;
+            bool succeded = _properties.TryGetValue("courseId", out courseId);
+            if (succeded)
+                uri = $"{uri}/courses/{courseId}";
+
+            succeded = _properties.TryGetValue("moduleId", out moduleId);
+            if (succeded)
+                uri = $"{uri}/modules/{moduleId}";
+
+            uri = $"{uri}/{typeof(TSource).Name}s";
+
+            succeded = _properties.TryGetValue("id", out id);
+            if (succeded)
+                uri = $"{uri}/{id}";
+            return uri;
+        }
+
+        private void ResolveExpression(Expression expression)
+        {
+            try
+            {
+                if (expression is BinaryExpression)
+                {
+                    if (expression.NodeType == ExpressionType.AndAlso)
+                    {
+                        var binaryExpression = expression as BinaryExpression;
+                        ResolveExpression(binaryExpression.Left);
+                        ResolveExpression(binaryExpression.Right);
+                    }
+                    else if (expression.NodeType == ExpressionType.Equal)
+                    {
+                        var binaryExpression = expression as BinaryExpression;
+                        ResolveExpression(binaryExpression.Left);
+                        ResolveExpression(binaryExpression.Right);
+                    }
+                }
+                else if (expression is ConstantExpression)
+                {
+                    var value = ((ConstantExpression)expression).Value;
+                    var tmp = _properties["temp"];
+                    if (tmp != null)
+                    {
+                        _properties.Add(tmp.ToString(), value);
+                        _properties.Remove("temp");
+                    }
+                    else
+                    {
+                        _properties.Add("temp", value);
+                    }
+                }
+                else if (expression is MemberExpression)
+                {
+                    var memberExpression = expression as MemberExpression;
+                    var tmp = _properties["temp"];
+                    if (tmp != null)
+                    {
+                        _properties.Add(memberExpression.Member.Name, tmp);
+                        _properties.Remove("temp");
+                    }
+                    else
+                    {
+                        _properties.Add("temp", memberExpression.Member.Name);
+                    }
+
+                }
+                else if (expression is MethodCallExpression)
+                {
+                    GetExpressionProperties(expression);                
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
         private void GetExpressionProperties(Expression expression)
         {
@@ -142,6 +248,24 @@ namespace VOD.Domain.Services.Services
 
                 _properties.Add(memberExpression.Member.Name, value);
             }
+            else if (argument is ConstantExpression)
+            {
+                var memberExpression = body.Object as MemberExpression;
+                var val = ((ConstantExpression)argument).Value;
+
+                _properties.Add(memberExpression.Member.Name, val);
+
+                /*  var body = expression as MethodCallExpression;
+                  if (body.Object is MemberExpression)
+                  {
+                      var arg = body.Arguments[0];
+                      var memberExpression = body.Object as MemberExpression;
+                      var val = ((ConstantExpression)arg).Value;
+
+                      _properties.Add(memberExpression.Member.Name, val);
+                  }*/
+            }
+
         }
     }
 }
