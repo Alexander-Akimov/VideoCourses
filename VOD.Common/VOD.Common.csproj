@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\VOD.Domain.Interfaces\VOD.Domain.Interfaces.csproj" />
     <ProjectReference Include="..\VOD.Domain\VOD.Domain.csproj" />
   </ItemGroup>
 

@@ -11,6 +11,10 @@ namespace VOD.Domain.Interfaces
     {
         Task<List<TResponse>> GetListAsync<TResponse>(string uri, string serviceName, string token = "") where TResponse : class;
 
+        Task<TResponse> GetAsync<TResponse>(string uri, string serviceName, string token = "") where TResponse : class;
+
         Task<TokenDTO> CreateTokenAsync(LoginUserDTO user, string uri, string serviceName, string token ="");
+
+        Task<TokenDTO> GetTokenAsync(LoginUserDTO user, string uri, string serviceName, string token ="");
     }
 }

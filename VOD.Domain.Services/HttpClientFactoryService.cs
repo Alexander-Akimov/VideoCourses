@@ -43,6 +43,24 @@ namespace VOD.Domain.Services
             }
         }
 
+        public async Task<TResponse> GetAsync<TResponse>(string uri, string serviceName, string token = "") where TResponse : class
+        {
+            try
+            {
+                if (new string[] { uri, serviceName }.IsNullOrEmptyOrWhiteSpace())
+                    throw new HttpResponseException(HttpStatusCode.NotFound, "Could not find the resource");
+
+                var httpClient = _httpClientFactory.CreateClient(serviceName);
+
+                return await httpClient.GetAsync<string, TResponse>(uri, _cancellationToken, null, token);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         public async Task<TokenDTO> CreateTokenAsync(LoginUserDTO user, string uri, string serviceName, string token = "")
         {
             try
@@ -51,8 +69,25 @@ namespace VOD.Domain.Services
                     throw new HttpResponseException(HttpStatusCode.NotFound, "Could not find the resource");
 
                 var httpClient = _httpClientFactory.CreateClient(serviceName);
-                throw new NotImplementedException();
-                //return ;//await httpClient.GetListAsync<TResponse>(uri, _cancellationToken, token);
+                
+                return await httpClient.PostAsync<LoginUserDTO, TokenDTO>(uri.ToLower(), user, _cancellationToken, token);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<TokenDTO> GetTokenAsync(LoginUserDTO user, string uri, string serviceName, string token = "")
+        {
+            try
+            {
+                if (new string[] { uri, serviceName }.IsNullOrEmptyOrWhiteSpace())
+                    throw new HttpResponseException(HttpStatusCode.NotFound, "Could not find the resource");
+
+                var httpClient = _httpClientFactory.CreateClient(serviceName);
+
+                return await httpClient.GetAsync<LoginUserDTO, TokenDTO>(uri.ToLower(), _cancellationToken, user, token);
             }
             catch (Exception ex)
             {

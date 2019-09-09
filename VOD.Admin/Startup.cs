@@ -22,6 +22,7 @@ using System.Net.Http;
 using VOD.Domain.Services.Services;
 using VOD.Common;
 using VOD.Common.Constants;
+using VOD.Common.Services;
 
 namespace VOD.Admin
 {
@@ -84,6 +85,7 @@ namespace VOD.Admin
             services.AddScoped<IAdminService, AdminAPIService>();
             services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
             services.AddScoped<IAdminCoursesService, AdminCoursesService>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
 
             services.AddAutoMapper(typeof(AdminMappingProfile).Assembly);
         }

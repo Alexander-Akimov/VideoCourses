@@ -25,6 +25,7 @@ namespace VOD.API.Services
             _configuration = configuration;
             _userService = userService;
         }
+
         public async Task<TokenDTO> GenerateTokenAsync(LoginUserDTO loginUserDTO)
         {
             try
@@ -79,6 +80,7 @@ namespace VOD.API.Services
                         claims.Add(claim);
             return claims;
         }
+
         private TokenDTO CreateToken(IList<Claim> claims)
         {
             try
@@ -109,7 +111,6 @@ namespace VOD.API.Services
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }

@@ -16,7 +16,7 @@ namespace VOD.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize(Policy = nameof(Roles.Admin))]
+    [Authorize(Policy = nameof(Roles.Admin))]
     public class InstructorsController : ControllerBase
     {
         private readonly IAdminService _adminService;

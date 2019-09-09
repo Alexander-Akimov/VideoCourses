@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VOD.Common.Constants;
+using VOD.Common.Services;
+using VOD.Domain.DTOModles;
 using VOD.Domain.Entities;
 using VOD.Domain.Interfaces;
 
@@ -13,11 +15,14 @@ namespace VOD.Domain.Services.Services
     public class AdminAPIService : IAdminService
     {
         private readonly IHttpClientFactoryService _http;
+        private readonly IJwtTokenService _jwtTokenService;
         private Dictionary<string, object> _properties = new Dictionary<string, object>();
+        private TokenDTO _token = new TokenDTO();
 
-        public AdminAPIService(IHttpClientFactoryService http)
+        public AdminAPIService(IHttpClientFactoryService http, IJwtTokenService jwtTokenService)
         {
             _http = http;
+            _jwtTokenService = jwtTokenService;
         }
 
         public Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>> expression) where TEntity : class
@@ -59,8 +64,9 @@ namespace VOD.Domain.Services.Services
             {
                 GetProperties<TSource>();
                 string uri = FormatUriWithoutIds<TSource>();
+                _token = await _jwtTokenService.CheckTokenAsync(_token);
 
-                return await _http.GetListAsync<TDestination>($"{uri}?include={include.ToString()}", AppConstants.HttpClientName);
+                return await _http.GetListAsync<TDestination>($"{uri}?include={include.ToString()}", AppConstants.HttpClientName, _token?.Token);
             }
             catch (Exception ex)
             {
@@ -82,9 +88,10 @@ namespace VOD.Domain.Services.Services
             try
             {
                 GetProperties(whereExpr);
-
                 string uri = FormatUriWithIds<TSource>();
-                throw new NotImplementedException();
+                _token = await _jwtTokenService.CheckTokenAsync(_token);
+
+                return await _http.GetAsync<TDestination>($"{uri}?include={include.ToString()}", AppConstants.HttpClientName, _token.Token);
             }
             catch (Exception ex)
             {
@@ -227,7 +234,7 @@ namespace VOD.Domain.Services.Services
                 }
                 else if (expression is MethodCallExpression)
                 {
-                    GetExpressionProperties(expression);                
+                    GetExpressionProperties(expression);
                 }
             }
             catch (Exception ex)

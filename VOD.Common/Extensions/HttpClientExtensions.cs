@@ -44,7 +44,7 @@ namespace VOD.Common.Extensions
             requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             return requestMessage;
         }
-        
+
 
         private static async Task<TResponse> DeserializeResponse<TResponse>(this HttpResponseMessage response)
         {
@@ -86,6 +86,7 @@ namespace VOD.Common.Extensions
             try
             {
                 var requestMessage = uri.CreateRequestHeaders(HttpMethod.Get, token);
+
                 using (var response = await httpClient.SendAsync(requestMessage,
                     HttpCompletionOption.ResponseHeadersRead, cancellationToken))
                 {
@@ -93,6 +94,53 @@ namespace VOD.Common.Extensions
                     await response.CheckStatusCodes();
 
                     return stream.ReadAndDeserializeFromJson<List<TResponse>>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static async Task<TResponse> GetAsync<TRequest, TResponse>(this HttpClient httpClient,
+           string uri, CancellationToken cancellationToken, TRequest content, string token = "")
+        {
+            try
+            {
+                var requestMessage = uri.CreateRequestHeaders(HttpMethod.Get, token);
+
+                if (content != null)
+                    await requestMessage.CreateRequestContent(content);
+
+
+                using (var response = await httpClient.SendAsync(requestMessage,
+                    HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    await response.CheckStatusCodes();
+
+                    return stream.ReadAndDeserializeFromJson<TResponse>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static async Task<TResponse> PostAsync<TRequest, TResponse>(this HttpClient httpClient,
+           string uri, TRequest content, CancellationToken cancellationToken, string token = "")
+        {
+            try
+            {
+                using (var requestMessage = uri.CreateRequestHeaders(HttpMethod.Post, token))
+                using ((await requestMessage.CreateRequestContent(content)).Content)
+                using (var responseMessage = await httpClient.SendAsync(requestMessage,
+                    HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+                {
+                    await responseMessage.CheckStatusCodes();
+
+                    return await responseMessage.DeserializeResponse<TResponse>();
                 }
             }
             catch (Exception ex)
