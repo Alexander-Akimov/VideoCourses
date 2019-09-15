@@ -43,6 +43,23 @@ namespace VOD.Domain.Services
             }
         }
 
+        public async Task<TokenDTO> GetTokenAsync(LoginUserDTO user, string uri, string serviceName, string token = "")
+        {
+            try
+            {
+                if (new string[] { uri, serviceName }.IsNullOrEmptyOrWhiteSpace())
+                    throw new HttpResponseException(HttpStatusCode.NotFound, "Could not find the resource");
+
+                var httpClient = _httpClientFactory.CreateClient(serviceName);
+
+                return await httpClient.GetAsync<LoginUserDTO, TokenDTO>(uri.ToLower(), _cancellationToken, user, token);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<TResponse> GetAsync<TResponse>(string uri, string serviceName, string token = "") where TResponse : class
         {
             try
@@ -78,7 +95,11 @@ namespace VOD.Domain.Services
             }
         }
 
-        public async Task<TokenDTO> GetTokenAsync(LoginUserDTO user, string uri, string serviceName, string token = "")
+       
+
+        public async Task<TResponse> PostAsync<TRequest, TResponse>(TRequest content, string uri, string serviceName, string token = "")
+            where TRequest : class
+            where TResponse : class
         {
             try
             {
@@ -87,7 +108,43 @@ namespace VOD.Domain.Services
 
                 var httpClient = _httpClientFactory.CreateClient(serviceName);
 
-                return await httpClient.GetAsync<LoginUserDTO, TokenDTO>(uri.ToLower(), _cancellationToken, user, token);
+                return await httpClient.PostAsync<TRequest, TResponse>(uri.ToLower(), content,  _cancellationToken, token);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<TResponse> PutAsync<TRequest, TResponse>(TRequest content, string uri, string serviceName, string token = "")
+            where TRequest : class
+            where TResponse : class
+        {
+            try
+            {
+                if (new string[] { uri, serviceName }.IsNullOrEmptyOrWhiteSpace())
+                    throw new HttpResponseException(HttpStatusCode.NotFound, "Could not find the resource");
+
+                var httpClient = _httpClientFactory.CreateClient(serviceName);
+
+                return await httpClient.PutAsync<TRequest, TResponse>(uri.ToLower(), content, _cancellationToken, token);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<string> DeleteAsync(string uri, string serviceName, string token = "")
+        {
+            try
+            {
+                if (new string[] { uri, serviceName }.IsNullOrEmptyOrWhiteSpace())
+                    throw new HttpResponseException(HttpStatusCode.NotFound, "Could not find the resource");
+
+                var httpClient = _httpClientFactory.CreateClient(serviceName);
+
+                return await httpClient.DeleteAsync(uri.ToLower(), _cancellationToken, token);
             }
             catch (Exception ex)
             {

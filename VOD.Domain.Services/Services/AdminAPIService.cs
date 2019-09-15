@@ -30,16 +30,44 @@ namespace VOD.Domain.Services.Services
             throw new NotImplementedException();
         }
 
-        public Task<int> CreateAsync<TSource, TDestination>(TSource item)
+        public async Task<int> CreateAsync<TSource, TDestination>(TSource item)
             where TSource : class
             where TDestination : class
         {
-            throw new NotImplementedException();
+            try
+            {
+                GetProperties(item);
+                string uri = FormatUriWithIds<TDestination>();
+                _token = await _jwtTokenService.CheckTokenAsync(_token);
+
+                var response = await _http.PostAsync<TSource, TSource>(item, uri, AppConstants.HttpClientName, _token.Token);
+
+                return (int)response.GetType()
+                    .GetProperty("Id")
+                    .GetValue(response);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
-        public Task<bool> DeleteAsync<TSource>(Expression<Func<TSource, bool>> expression) where TSource : class
+        public async Task<bool> DeleteAsync<TSource>(Expression<Func<TSource, bool>> expression) where TSource : class
         {
-            throw new NotImplementedException();
+            try
+            {
+                GetProperties(expression);
+                string uri = FormatUriWithIds<TSource>();
+                _token = await _jwtTokenService.CheckTokenAsync(_token);
+
+                var response = await _http.DeleteAsync(uri, AppConstants.HttpClientName, _token.Token);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public Task<List<TDestination>> GetAsync<TSource, TDestination>(params Expression<Func<TSource, object>>[] include)
@@ -106,11 +134,24 @@ namespace VOD.Domain.Services.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync<TSource, TDestination>(TSource item)
+        public async Task<bool> UpdateAsync<TSource, TDestination>(TSource item)
             where TSource : class
             where TDestination : class
         {
-            throw new NotImplementedException();
+            try
+            {
+                GetProperties(item);
+                string uri = FormatUriWithIds<TDestination>();
+                _token = await _jwtTokenService.CheckTokenAsync(_token);
+
+                var response = await _http.PutAsync<TSource, TSource>(item, uri, AppConstants.HttpClientName, _token.Token);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         private void GetProperties<TSource>()
@@ -148,6 +189,45 @@ namespace VOD.Domain.Services.Services
             catch { throw; }
         }
 
+        private void GetProperties<TSource>(TSource source)
+        {
+
+            try
+            {
+                _properties.Clear();
+
+                var idProperty = source.GetType().GetProperty("Id");
+                var moduleProperty = source.GetType().GetProperty("ModuleId");
+                var courseProperty = source.GetType().GetProperty("CourseId");
+
+                if (idProperty != null)
+                {
+                    var id = idProperty.GetValue(source);
+                    if (id != null && (int)id > 0)
+                        _properties.Add("id", id);
+                }
+                if (moduleProperty != null)
+                {
+                    var moduleId = moduleProperty.GetValue(source);
+                    if (moduleId != null && (int)moduleId > 0)
+                        _properties.Add("moduleId", moduleId);
+                }
+                if (courseProperty != null)
+                {
+                    var courseId = courseProperty.GetValue(source);
+                    if (courseId != null && (int)courseId > 0)
+                        _properties.Add("courseId", courseId);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _properties.Clear();
+                throw;
+            }
+
+        }
+
         private string FormatUriWithoutIds<TSource>()
         {
             string uri = "api";
@@ -164,6 +244,7 @@ namespace VOD.Domain.Services.Services
             uri = $"{uri}/{typeof(TSource).Name}s"; //$"{nameof(TSource)}s";
             return uri;
         }
+
         private string FormatUriWithIds<TSource>()
         {
             string uri = "api";

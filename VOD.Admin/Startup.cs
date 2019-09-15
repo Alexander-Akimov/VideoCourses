@@ -84,7 +84,7 @@ namespace VOD.Admin
             //services.AddScoped<IAdminService, AdminEFService>();
             services.AddScoped<IAdminService, AdminAPIService>();
             services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
-            services.AddScoped<IAdminCoursesService, AdminCoursesService>();
+            //services.AddScoped<IAdminCoursesService, AdminCoursesService>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
 
             services.AddAutoMapper(typeof(AdminMappingProfile).Assembly);
