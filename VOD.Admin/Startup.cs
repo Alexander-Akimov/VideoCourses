@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using VOD.Database;
 using VOD.Domain.Entities;
 using AutoMapper;
@@ -23,6 +23,7 @@ using VOD.Domain.Services.Services;
 using VOD.Common;
 using VOD.Common.Constants;
 using VOD.Common.Services;
+using Microsoft.AspNetCore.Identity.UI;
 
 namespace VOD.Admin
 {
@@ -51,7 +52,7 @@ namespace VOD.Admin
 
             services.AddDefaultIdentity<VODUser>()
                 .AddRoles<IdentityRole>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddDefaultUI()
                 .AddEntityFrameworkStores<VODContext>();
 
             services.Configure<IdentityOptions>(options =>
@@ -76,7 +77,8 @@ namespace VOD.Admin
                 AutomaticDecompression = System.Net.DecompressionMethods.GZip
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddRazorPages()
+                .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             services.AddScoped<IDbReadService, DbReadService>();
             services.AddScoped<IDbWriteService, DbWriteService>();
@@ -91,12 +93,11 @@ namespace VOD.Admin
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -107,11 +108,16 @@ namespace VOD.Admin
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseRouting();
             //app.UseCookiePolicy();
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
-            app.UseMvc();
+            app.UseEndpoints(endpoints => {
+                endpoints.MapRazorPages();
+            });
         }
     }
 }

@@ -19,6 +19,7 @@ using AutoMapper;
 using VOD.Common.AutoMapper;
 using VOD.Domain.Interfaces;
 using VOD.Domain.Services;
+using Microsoft.Extensions.Hosting;
 
 namespace VOD.UI
 {
@@ -46,7 +47,7 @@ namespace VOD.UI
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<VODUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddDefaultUI()
                 .AddEntityFrameworkStores<VODContext>();
 
             services.Configure<IdentityOptions>(options =>
@@ -60,7 +61,11 @@ namespace VOD.UI
                 options.Password.RequiredUniqueChars = 1;
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //services.AddRouting();
+            /*  services.AddControllersWithViews();
+              services.AddRazorPages();*/
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             services.AddScoped<IDbReadService, DbReadService>();
             services.AddScoped<IUIReadService, UIReadService>();
@@ -69,7 +74,7 @@ namespace VOD.UI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, VODContext dbContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, VODContext dbContext)
         {
             if (env.IsDevelopment())
             {
@@ -85,18 +90,25 @@ namespace VOD.UI
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseRouting();
+
             // app.UseCookiePolicy();
 
             //Uncomment to seed the database
             //DbInitializer.Initialize(dbContext);
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
+
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action}/{id?}",
+                    defaults: new { controller = "Home", action = "Index" });
             });
         }
     }

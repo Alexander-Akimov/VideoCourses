@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -48,7 +48,10 @@ namespace VOD.API
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<VODContext>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            //services.AddRouting
+            services.AddControllers().SetCompatibilityVersion(CompatibilityVersion.Latest);
+
             /* services.AddMvc(options =>
              {
                  options.OutputFormatters.Insert(0, new XmlSerializerOutputFormatter());
@@ -62,7 +65,7 @@ namespace VOD.API
             services.AddScoped<IDbWriteService, DbWriteService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAdminService, AdminEFService>();
-            services.AddTransient<ITokenService, TokenService>();           
+            services.AddTransient<ITokenService, TokenService>();
 
             services.AddAuthentication(options =>
             {
@@ -91,7 +94,7 @@ namespace VOD.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -106,8 +109,15 @@ namespace VOD.API
             }
 
             //app.UseHttpsRedirection();
+            app.UseRouting();
+
             app.UseAuthentication();
-            app.UseMvc();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

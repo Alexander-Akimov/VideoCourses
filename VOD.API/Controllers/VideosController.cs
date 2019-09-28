@@ -10,11 +10,14 @@ using VOD.Domain.Interfaces;
 using VOD.Domain.DTOModles.Admin;
 using VOD.Domain.Entities;
 using VOD.Common.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using VOD.Common.Constants;
 
 namespace VOD.API.Controllers
 {
     [Route("api/courses/{courseId}/modules/{moduleId}/[controller]")]
     [ApiController]
+    [Authorize(Policy = nameof(Roles.Admin))]
     public class VideosController : ControllerBase
     {
         private readonly IAdminService _adminService;
