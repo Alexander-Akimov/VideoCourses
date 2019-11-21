@@ -25,9 +25,9 @@ namespace VOD.API.Controllers
 
         public InstructorsController(IAdminService adminService, LinkGenerator linkGenerator, ILogger<InstructorsController> logger)
         {
-            this._adminService = adminService;
-            this._linkGenerator = linkGenerator;
-            this._logger = logger;
+            _adminService = adminService;
+            _linkGenerator = linkGenerator;
+            _logger = logger;
         }
 
         [HttpGet]
