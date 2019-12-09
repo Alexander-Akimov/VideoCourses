@@ -72,10 +72,10 @@ namespace VOD.Admin
                 client.Timeout = new TimeSpan(0, 0, 30);
                 client.DefaultRequestHeaders.Clear();
             }).ConfigurePrimaryHttpMessageHandler(handler =>
-            new HttpClientHandler()
-            {
-                AutomaticDecompression = System.Net.DecompressionMethods.GZip
-            });
+                new HttpClientHandler()
+                {
+                    AutomaticDecompression = System.Net.DecompressionMethods.GZip
+                });
 
             services.AddRazorPages()
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
@@ -115,7 +115,8 @@ namespace VOD.Admin
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => {
+            app.UseEndpoints(endpoints =>
+            {
                 endpoints.MapRazorPages();
             });
         }

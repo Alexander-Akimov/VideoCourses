@@ -24,9 +24,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VOD.API", "VOD.API\VOD.API.csproj", "{2F94D4E8-7207-428C-A91E-10B193A2C6C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VOD.Domain.Interfaces", "VOD.Domain.Interfaces\VOD.Domain.Interfaces.csproj", "{F5D455AD-4A3C-47C2-BA00-0F7066EF53D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VOD.Domain.Interfaces", "VOD.Domain.Interfaces\VOD.Domain.Interfaces.csproj", "{F5D455AD-4A3C-47C2-BA00-0F7066EF53D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VOD.Domain.Services", "VOD.Domain.Services\VOD.Domain.Services.csproj", "{4D3C2795-7FF7-42DA-887B-7D2012E1D0BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VOD.Domain.Services", "VOD.Domain.Services\VOD.Domain.Services.csproj", "{4D3C2795-7FF7-42DA-887B-7D2012E1D0BB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcGreeter", "GrpcGreeter\GrpcGreeter.csproj", "{C4FDE162-42F7-4148-8D53-3A58ACA31AF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcGreeterClient", "GrpcGreeterClient\GrpcGreeterClient.csproj", "{5C9489D3-05D6-42F2-8912-804E7DBB1AAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +74,14 @@ Global
 		{4D3C2795-7FF7-42DA-887B-7D2012E1D0BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D3C2795-7FF7-42DA-887B-7D2012E1D0BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D3C2795-7FF7-42DA-887B-7D2012E1D0BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4FDE162-42F7-4148-8D53-3A58ACA31AF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4FDE162-42F7-4148-8D53-3A58ACA31AF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4FDE162-42F7-4148-8D53-3A58ACA31AF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4FDE162-42F7-4148-8D53-3A58ACA31AF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C9489D3-05D6-42F2-8912-804E7DBB1AAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C9489D3-05D6-42F2-8912-804E7DBB1AAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C9489D3-05D6-42F2-8912-804E7DBB1AAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C9489D3-05D6-42F2-8912-804E7DBB1AAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
