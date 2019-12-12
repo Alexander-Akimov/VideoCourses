@@ -40,7 +40,7 @@ namespace VOD.Domain.Services.Services
                 string uri = FormatUriWithIds<TDestination>();
                 _token = await _jwtTokenService.CheckTokenAsync(_token);
 
-                var response = await _http.PostAsync<TSource, TSource>(item, uri, AppConstants.HttpClientName, _token.Token);
+                var response = await _http.PostAsync<TSource, TDestination>(item, uri, AppConstants.HttpClientName, _token.Token);
 
                 return (int)response.GetType()
                     .GetProperty("Id")

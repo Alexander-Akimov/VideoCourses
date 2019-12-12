@@ -17,7 +17,7 @@ namespace VOD.UI.Controllers
     public class MembershipController : Controller
     {
         private readonly string _userId;
-        public readonly IMapper _mapper;
+        private readonly IMapper _mapper;
         private readonly IUIReadService _uiReadService;
 
         public MembershipController(IHttpContextAccessor httpContextAccessor,

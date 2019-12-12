@@ -61,7 +61,7 @@ namespace VOD.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<InstructorDTO>>> Post(InstructorDTO model)
+        public async Task<ActionResult<InstructorDTO>> Post(InstructorDTO model)
         {
             try
             {

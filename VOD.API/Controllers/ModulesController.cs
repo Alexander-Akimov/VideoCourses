@@ -68,7 +68,7 @@ namespace VOD.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<ModuleDTO>>> Post(int courseId, ModuleDTO model)
+        public async Task<ActionResult<ModuleDTO>> Post(int courseId, ModuleDTO model)
         {
             if (courseId.Equals(0)) courseId = model.CourseId;
             if (model == null) return BadRequest("No entity provided");

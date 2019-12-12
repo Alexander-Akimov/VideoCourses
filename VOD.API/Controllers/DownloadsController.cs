@@ -69,7 +69,7 @@ namespace VOD.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<DownloadDTO>>> Post(int moduleId, int courseId, DownloadDTO model)
+        public async Task<ActionResult<DownloadDTO>> Post(int moduleId, int courseId, DownloadDTO model)
         {
             if (moduleId.Equals(0)) moduleId = model.ModuleId;
             if (courseId.Equals(0)) courseId = model.CourseId;
