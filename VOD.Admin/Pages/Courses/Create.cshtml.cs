@@ -9,6 +9,7 @@ using VOD.Domain.DTOModles.Admin;
 using VOD.Domain.Entities;
 using VOD.Common.Extensions;
 using VOD.Domain.Interfaces;
+using VOD.Domain.Interfaces.Services;
 
 namespace VOD.Admin.Pages.Courses
 {
@@ -22,8 +23,10 @@ namespace VOD.Admin.Pages.Courses
         public string Alert { get; set; }
 
         private readonly IAdminService _adminService;
-        public CreateModel(IAdminService adminService)
+        private readonly IAdminGrpcService _adminGrpcService;
+        public CreateModel(IAdminService adminService, IAdminGrpcService adminGrpcService)
         {
+            _adminGrpcService = adminGrpcService;
             _adminService = adminService;
         }
         public async Task<IActionResult> OnGetAsync()
@@ -43,20 +46,30 @@ namespace VOD.Admin.Pages.Courses
         }
         public async Task<IActionResult> OnPostAsync()
         {
-            if (ModelState.IsValid)
+            try
             {
-                var succeeded = (await _adminService.CreateAsync<CourseDTO, Course>(Input)) > 0;
-                if (succeeded)
+                if (ModelState.IsValid)
                 {
-                    // Message sent back to the Index Razor Page.
-                    Alert = $"Created a new Course for {Input.Title}.";
-                    return RedirectToPage("Index");
+
+
+                    var succeeded = (await _adminGrpcService.CreateAsync<CourseDTO, Course>(Input)) > 0;
+                    if (succeeded)
+                    {
+                        // Message sent back to the Index Razor Page.
+                        Alert = $"Created a new Course for {Input.Title}.";
+                        return RedirectToPage("Index");
+                    }
                 }
+                // Something failed, redisplay the form.
+                ViewData["Instructors"] = (await _adminService.GetAsync<Instructor, InstructorDTO>())
+                        .ToSelectList("Id", "Name");
+                return Page();
             }
-            // Something failed, redisplay the form.
-            ViewData["Instructors"] = (await _adminService.GetAsync<Instructor, InstructorDTO>())
-                    .ToSelectList("Id", "Name");
-            return Page();
+            catch
+            {
+                Alert = "You do not have access to this page.";
+                return RedirectToPage("/Index");
+            }
         }
     }
 }

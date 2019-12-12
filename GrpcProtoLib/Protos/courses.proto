@@ -5,20 +5,15 @@ option csharp_namespace = "GrpcGreeter.Protos";
 // The service definition.
 service CoursesService {
   // Sends a greeting
-  rpc CreateCourse (CourseRequest) returns (CourseReply);
+  rpc CreateCourse (CourseMessage) returns (CourseMessage);
 }
 
 // The request message containing the user's name.
-message CourseRequest {
+message CourseMessage {
   int32 id = 1;
   string image_url = 2;
   string marquee_image_url = 3;
   string title = 4;
   string description = 5;
   int32 instructor_id = 6;
-}
-
-// The response message containing the greetings.
-message CourseReply {
-  repeated  CourseRequest courses = 1;
 }

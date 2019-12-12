@@ -29,7 +29,7 @@ namespace VOD.Admin.Pages.Courses
         {
             try
             {
-                Items = await _adminService.GetAsync<Course, CourseDTO>(c => c.Instructor);
+                Items = await _adminService.GetAsync<Course, CourseDTO>(include: true);//(c => c.Instructor);
                 return Page();
             }
             catch// (Exception)

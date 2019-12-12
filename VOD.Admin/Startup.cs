@@ -24,6 +24,7 @@ using VOD.Common;
 using VOD.Common.Constants;
 using VOD.Common.Services;
 using Microsoft.AspNetCore.Identity.UI;
+using VOD.Domain.Interfaces.Services;
 
 namespace VOD.Admin
 {
@@ -85,6 +86,7 @@ namespace VOD.Admin
             services.AddScoped<IUserService, UserService>();
             //services.AddScoped<IAdminService, AdminEFService>();
             services.AddScoped<IAdminService, AdminAPIService>();
+            services.AddScoped<IAdminGrpcService, AdminGrpcService>();
             services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
             //services.AddScoped<IAdminCoursesService, AdminCoursesService>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();

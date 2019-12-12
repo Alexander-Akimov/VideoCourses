@@ -7,12 +7,16 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.24.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.25.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GrpcProtoLib\GrpcProtoLib.csproj" />
+    <ProjectReference Include="..\VOD.Common\VOD.Common.csproj" />
     <ProjectReference Include="..\VOD.Database\VOD.Database.csproj" />
+    <ProjectReference Include="..\VOD.Domain.Services\VOD.Domain.Services.csproj" />
   </ItemGroup>
 
 </Project>

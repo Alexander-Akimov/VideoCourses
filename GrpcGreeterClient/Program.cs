@@ -30,9 +30,9 @@ namespace GrpcGreeterClient
             var client = new CoursesService.CoursesServiceClient(channel);
 
             var reply = await client.CreateCourseAsync(
-                new CourseRequest { Title = "BestTitle" });
+                new CourseMessage { Title = "BestTitle" });
 
-            var result = reply.Courses.FirstOrDefault()?.Title;
+            var result = reply.Title;
 
             Console.WriteLine(result);
 
