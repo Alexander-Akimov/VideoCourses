@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GrpcProtoLib.Protos;
 using Grpc.Core;
-using GrpcGreeter.Protos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using VOD.Common.Constants;
@@ -12,7 +12,7 @@ using VOD.Common.Services;
 namespace GrpcGreeter.Services
 {
     [Authorize(Policy = nameof(Roles.Admin))]
-    public class CoursesService : Protos.CoursesService.CoursesServiceBase
+    public class CoursesService : Courses.CoursesBase
     {
         private readonly ILogger<CoursesService> _logger;
 

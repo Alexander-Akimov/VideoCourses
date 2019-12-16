@@ -25,6 +25,8 @@ using VOD.Common.Constants;
 using VOD.Common.Services;
 using Microsoft.AspNetCore.Identity.UI;
 using VOD.Domain.Interfaces.Services;
+using GrpcProtoLib;
+using GrpcProtoLib.Protos;
 
 namespace VOD.Admin
 {
@@ -90,6 +92,16 @@ namespace VOD.Admin
             services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
             //services.AddScoped<IAdminCoursesService, AdminCoursesService>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+
+
+            services.AddGrpcClient<Tokenizer.TokenizerClient>(o =>
+            {
+                o.Address = new Uri("https://localhost:5001");
+            });
+            services.AddGrpcClient<Courses.CoursesClient>(o =>
+            {
+                o.Address = new Uri("https://localhost:5001");
+            });
 
             services.AddAutoMapper(typeof(AdminMappingProfile).Assembly);
         }

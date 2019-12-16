@@ -1,12 +1,11 @@
 ﻿using System;
 using Grpc.Net.Client;
-using GrpcGreeter;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Google.Protobuf.Collections;
 using System.Collections;
-using GrpcGreeter.Protos;
 using System.Linq;
+using GrpcProtoLib.Protos;
 
 namespace GrpcGreeterClient
 {
@@ -27,7 +26,7 @@ namespace GrpcGreeterClient
 
 
 
-            var client = new CoursesService.CoursesServiceClient(channel);
+            var client = new Courses.CoursesClient(channel);
 
             var reply = await client.CreateCourseAsync(
                 new CourseMessage { Title = "BestTitle" });

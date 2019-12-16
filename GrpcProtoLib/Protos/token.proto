@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcProtoLib.Protos";
+import "google/protobuf/timestamp.proto";
+
+// The service definition.
+service Tokenizer {
+  // Sends a greeting
+  rpc GenerateToken (UserMessage) returns (TokenMessage);
+  rpc GetToken (UserMessage) returns (TokenMessage);
+}
+
+// The request message containing the user data.
+message UserMessage {
+  string user_id = 1;
+  string email = 2;
+  string password = 3;
+  string password_hash = 4;
+}
+
+message TokenMessage {
+  string token = 1;
+  google.protobuf.Timestamp token_expires = 2;
+}
+

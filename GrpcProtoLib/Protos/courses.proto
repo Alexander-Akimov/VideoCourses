@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-option csharp_namespace = "GrpcGreeter.Protos";
+option csharp_namespace = "GrpcProtoLib.Protos";
 
 // The service definition.
-service CoursesService {
+service Courses {
   // Sends a greeting
   rpc CreateCourse (CourseMessage) returns (CourseMessage);
 }

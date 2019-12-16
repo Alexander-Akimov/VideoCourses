@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <None Remove="Protos\greet.proto" />
+    <None Remove="Protos\token.proto" />
+    <None Remove="Protos\courses.proto" />
   </ItemGroup>
 
 

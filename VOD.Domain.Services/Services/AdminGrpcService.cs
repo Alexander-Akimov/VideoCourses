@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
-using GrpcGreeter.Protos;
+using GrpcProtoLib.Protos;
 using VOD.Common.Services;
 using VOD.Domain.DTOModles;
 using VOD.Domain.Interfaces;
@@ -28,23 +28,51 @@ namespace VOD.Domain.Services.Services
             throw new NotImplementedException();
         }
 
+        private async Task<GrpcChannel> CreateAuthenticatedChannel(string address)
+        {
+            _token = await _jwtTokenService.CheckTokenAsync(_token);
+
+            var credentials = CallCredentials.FromInterceptor((context, metadata) =>
+            {
+                if (!string.IsNullOrEmpty(_token.Token))
+                {
+                    metadata.Add("Authorization", $"Bearer {_token.Token}");
+                }
+                return Task.CompletedTask;
+            });
+            
+            // SslCredentials is used here because this channel is using TLS.
+            // CallCredentials can't be used with ChannelCredentials.Insecure on non-TLS channels.
+            var channel = GrpcChannel.ForAddress(address, new GrpcChannelOptions
+            {
+                Credentials = ChannelCredentials.Create(new SslCredentials(), credentials)
+            });
+            return channel;
+        }
+
         public async Task<int> CreateAsync<TSource, TDestination>(TSource item)
             where TSource : class
             where TDestination : class
         {
+            /**/ var channel = GrpcChannel.ForAddress("https://localhost:5001");
             _token = await _jwtTokenService.CheckTokenAsync(_token);
 
-            var channel = GrpcChannel.ForAddress("https://localhost:5001");
             var headers = new Metadata();
-            headers.Add("Authorization", $"Bearer {_token.Token}");
+             headers.Add("Authorization", $"Bearer {_token.Token}");
+             var client = new Courses.CoursesClient(channel);
+             var reply = await client.CreateCourseAsync(
+                 new CourseMessage { Title = "BestTitle" }, headers);
 
+          /*  var channel = await CreateAuthenticatedChannel("https://localhost:5001");
             var client = new CoursesService.CoursesServiceClient(channel);
+            */
+           /* var serviceFactory = _grpcServiceFactory.GetService<TSource>();
+            serviceFactory
 
             var reply = await client.CreateCourseAsync(
-                new CourseMessage { Title = "BestTitle" }, headers);
+               new CourseMessage { Title = "BestTitle" });.*/
 
             return reply.Id;
-
         }
 
         public Task<bool> DeleteAsync<TSource>(Expression<Func<TSource, bool>> expression) where TSource : class

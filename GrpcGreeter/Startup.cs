@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AutoMapper;
+using GrpcGreeter.AutoMapper;
 using GrpcGreeter.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -14,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using VOD.API.Services;
 using VOD.Common.Constants;
 using VOD.Common.Services;
 using VOD.Database;
@@ -70,6 +73,8 @@ namespace GrpcGreeter
                 options.AddPolicy(Roles.VODUser, policy => policy.RequireClaim(Roles.VODUser, "true"));
                 options.AddPolicy(Roles.Admin, policy => policy.RequireClaim(Roles.Admin, "true"));
             });
+            services.AddAutoMapper(typeof(GrpcMappingProfile));
+            services.AddTransient<ITokenService, TokenService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,6 +95,8 @@ namespace GrpcGreeter
                 endpoints.MapGrpcService<GreeterService>();
 
                 endpoints.MapGrpcService<CoursesService>();
+
+                endpoints.MapGrpcService<TokenGrpcService>();
 
                 endpoints.MapGet("/", async context =>
                 {

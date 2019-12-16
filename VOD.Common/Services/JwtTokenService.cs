@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using GrpcProtoLib.Protos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using VOD.Common.Constants;
@@ -18,14 +19,17 @@ namespace VOD.Common.Services
     public class JwtTokenService : IJwtTokenService
     {
         private readonly IHttpClientFactoryService _http;
+        private readonly Tokenizer.TokenizerClient _client;
         private readonly UserManager<VODUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public JwtTokenService(IHttpClientFactoryService http,
             UserManager<VODUser> userManager,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            Tokenizer.TokenizerClient client)
         {
-            _http = http;
+            //_http = http;
+            _client = client;
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
         }
@@ -62,6 +66,8 @@ namespace VOD.Common.Services
                     PasswordHash = user.PasswordHash
                 };
                 var token = await _http.CreateTokenAsync(tokenUser, "api/token", AppConstants.HttpClientName);
+
+                //_client.GenerateTokenAsync()
 
                 return token;
             }
