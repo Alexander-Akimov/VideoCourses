@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
-using GrpcGreeter.AutoMapper;
 using GrpcGreeter.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +22,7 @@ using VOD.Database;
 using VOD.Domain.Entities;
 using VOD.Domain.Interfaces;
 using VOD.Domain.Services;
+using VOD.Grpc.Common.AutoMapper;
 
 namespace GrpcGreeter
 {
@@ -74,7 +74,8 @@ namespace GrpcGreeter
                 options.AddPolicy(Roles.Admin, policy => policy.RequireClaim(Roles.Admin, "true"));
             });
             services.AddAutoMapper(typeof(GrpcMappingProfile));
-            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ITokenService, TokenService>();            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

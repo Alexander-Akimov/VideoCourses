@@ -9,7 +9,7 @@ using VOD.Domain.DTOModles.Admin;
 using VOD.Domain.Entities;
 using VOD.Common.Extensions;
 using VOD.Domain.Interfaces;
-using VOD.Domain.Interfaces.Services;
+using VOD.Grpc.Common.Services;
 
 namespace VOD.Admin.Pages.Courses
 {
@@ -23,8 +23,8 @@ namespace VOD.Admin.Pages.Courses
         public string Alert { get; set; }
 
         private readonly IAdminService _adminService;
-        private readonly IAdminGrpcService _adminGrpcService;
-        public CreateModel(IAdminService adminService, IAdminGrpcService adminGrpcService)
+        private readonly IAdminGrpcClientService _adminGrpcService;
+        public CreateModel(IAdminService adminService, IAdminGrpcClientService adminGrpcService)
         {
             _adminGrpcService = adminGrpcService;
             _adminService = adminService;
@@ -50,8 +50,6 @@ namespace VOD.Admin.Pages.Courses
             {
                 if (ModelState.IsValid)
                 {
-
-
                     var succeeded = (await _adminGrpcService.CreateAsync<CourseDTO, Course>(Input)) > 0;
                     if (succeeded)
                     {

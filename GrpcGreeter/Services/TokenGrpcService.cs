@@ -25,7 +25,7 @@ namespace GrpcGreeter.Services
             _mapper = mapper;
         }
 
-        public override async Task<TokenMessage> GenerateToken(UserMessage request, ServerCallContext context)
+        public override async Task<TokenMessage> CreateToken(UserMessage request, ServerCallContext context)
         {
             try
             {

@@ -6,7 +6,7 @@ import "google/protobuf/timestamp.proto";
 // The service definition.
 service Tokenizer {
   // Sends a greeting
-  rpc GenerateToken (UserMessage) returns (TokenMessage);
+  rpc CreateToken (UserMessage) returns (TokenMessage);
   rpc GetToken (UserMessage) returns (TokenMessage);
 }
 

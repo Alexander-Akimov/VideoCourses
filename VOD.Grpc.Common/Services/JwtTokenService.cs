@@ -4,32 +4,39 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using GrpcProtoLib.Protos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using VOD.Common.Constants;
 using VOD.Common.Extensions;
+using VOD.Common.Services;
 using VOD.Domain.DTOModles;
 using VOD.Domain.DTOModles.Admin;
 using VOD.Domain.Entities;
 using VOD.Domain.Interfaces;
 
-namespace VOD.Common.Services
+namespace VOD.Grpc.Common
 {
     public class JwtTokenService : IJwtTokenService
     {
-        private readonly IHttpClientFactoryService _http;
-        private readonly Tokenizer.TokenizerClient _client;
+        private readonly Tokenizer.TokenizerClient _tokenGrpcClient;
+        private readonly IMapper _mapper;
+        private readonly ILogger<JwtTokenService> _logger;
         private readonly UserManager<VODUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public JwtTokenService(IHttpClientFactoryService http,
-            UserManager<VODUser> userManager,
+        public JwtTokenService(UserManager<VODUser> userManager,
             IHttpContextAccessor httpContextAccessor,
-            Tokenizer.TokenizerClient client)
+            Tokenizer.TokenizerClient tokenGrpcClient,
+            IMapper mapper, 
+            ILogger<JwtTokenService> logger)
         {
             //_http = http;
-            _client = client;
+            _tokenGrpcClient = tokenGrpcClient;
+            _mapper = mapper;
+            _logger = logger;
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
         }
@@ -59,20 +66,20 @@ namespace VOD.Common.Services
                     .FindFirst(ClaimTypes.NameIdentifier).Value;
 
                 var user = await _userManager.FindByIdAsync(userId);
-                var tokenUser = new LoginUserDTO
+                var tokenUser = new UserMessage
                 {
                     Email = user.Email,
                     Password = "",
                     PasswordHash = user.PasswordHash
                 };
-                var token = await _http.CreateTokenAsync(tokenUser, "api/token", AppConstants.HttpClientName);
+                var tokenMessage = await _tokenGrpcClient.CreateTokenAsync(tokenUser);
 
-                //_client.GenerateTokenAsync()
-
+                var token = _mapper.Map<TokenDTO>(tokenMessage);
                 return token;
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return default;
             }
         }
@@ -98,18 +105,21 @@ namespace VOD.Common.Services
                     return new TokenDTO(token, expires);
 
                 // Return token from the API
-                var tokenUser = new LoginUserDTO
+                var tokenUser = new UserMessage
                 {
+                    UserId = user.Id,
                     Email = user.Email,
                     Password = "",
                     PasswordHash = user.PasswordHash
                 };
+                var tokenMessage = await _tokenGrpcClient.GetTokenAsync(tokenUser);
 
-                var newToken = await _http.GetTokenAsync(tokenUser, $"api/token/{user.Id}", AppConstants.HttpClientName);
+                var newToken = _mapper.Map<TokenDTO>(tokenMessage);
                 return newToken;
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return default;
             }
         }

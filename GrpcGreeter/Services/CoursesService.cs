@@ -28,6 +28,7 @@ namespace GrpcGreeter.Services
             {
                 result = new CourseMessage()
                 {
+                    Id = 1,
                     Title = "Smart Title"
                 };
             }

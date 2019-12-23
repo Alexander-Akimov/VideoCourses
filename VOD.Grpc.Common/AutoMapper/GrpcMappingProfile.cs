@@ -8,7 +8,7 @@ using GrpcProtoLib.Protos;
 using VOD.Domain.DTOModles;
 using VOD.Domain.DTOModles.Admin;
 
-namespace GrpcGreeter.AutoMapper
+namespace VOD.Grpc.Common.AutoMapper
 {
     public class GrpcMappingProfile : Profile
     {

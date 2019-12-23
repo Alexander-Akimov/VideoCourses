@@ -8,17 +8,15 @@ using Grpc.Net.Client;
 using GrpcProtoLib.Protos;
 using VOD.Common.Services;
 using VOD.Domain.DTOModles;
-using VOD.Domain.Interfaces;
-using VOD.Domain.Interfaces.Services;
 
-namespace VOD.Domain.Services.Services
+namespace VOD.Grpc.Common.Services
 {
-    public class AdminGrpcService : IAdminGrpcService
+    public class AdminGrpcClientService : IAdminGrpcClientService
     {
         private readonly IJwtTokenService _jwtTokenService;
         private TokenDTO _token = new TokenDTO();
 
-        public AdminGrpcService(IJwtTokenService jwtTokenService)
+        public AdminGrpcClientService(IJwtTokenService jwtTokenService)
         {
             _jwtTokenService = jwtTokenService;
         }
@@ -40,7 +38,7 @@ namespace VOD.Domain.Services.Services
                 }
                 return Task.CompletedTask;
             });
-            
+
             // SslCredentials is used here because this channel is using TLS.
             // CallCredentials can't be used with ChannelCredentials.Insecure on non-TLS channels.
             var channel = GrpcChannel.ForAddress(address, new GrpcChannelOptions
@@ -54,23 +52,25 @@ namespace VOD.Domain.Services.Services
             where TSource : class
             where TDestination : class
         {
-            /**/ var channel = GrpcChannel.ForAddress("https://localhost:5001");
             _token = await _jwtTokenService.CheckTokenAsync(_token);
 
-            var headers = new Metadata();
-             headers.Add("Authorization", $"Bearer {_token.Token}");
-             var client = new Courses.CoursesClient(channel);
-             var reply = await client.CreateCourseAsync(
-                 new CourseMessage { Title = "BestTitle" }, headers);
+            var channel = GrpcChannel.ForAddress("https://localhost:5001");
+            var client = new Courses.CoursesClient(channel);            
 
-          /*  var channel = await CreateAuthenticatedChannel("https://localhost:5001");
-            var client = new CoursesService.CoursesServiceClient(channel);
-            */
-           /* var serviceFactory = _grpcServiceFactory.GetService<TSource>();
-            serviceFactory
+            var headers = new Metadata();
+            headers.Add("Authorization", $"Bearer {_token.Token}");            
 
             var reply = await client.CreateCourseAsync(
-               new CourseMessage { Title = "BestTitle" });.*/
+                new CourseMessage { Title = "BestTitle" }, headers);
+
+            /*  var channel = await CreateAuthenticatedChannel("https://localhost:5001");
+              var client = new CoursesService.CoursesServiceClient(channel);
+              */
+            /* var serviceFactory = _grpcServiceFactory.GetService<TSource>();
+             serviceFactory
+
+             var reply = await client.CreateCourseAsync(
+                new CourseMessage { Title = "BestTitle" });.*/
 
             return reply.Id;
         }

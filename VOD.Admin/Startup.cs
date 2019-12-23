@@ -24,9 +24,10 @@ using VOD.Common;
 using VOD.Common.Constants;
 using VOD.Common.Services;
 using Microsoft.AspNetCore.Identity.UI;
-using VOD.Domain.Interfaces.Services;
-using GrpcProtoLib;
 using GrpcProtoLib.Protos;
+using VOD.Grpc.Common.AutoMapper;
+using VOD.Grpc.Common;
+using VOD.Grpc.Common.Services;
 
 namespace VOD.Admin
 {
@@ -88,12 +89,16 @@ namespace VOD.Admin
             services.AddScoped<IUserService, UserService>();
             //services.AddScoped<IAdminService, AdminEFService>();
             services.AddScoped<IAdminService, AdminAPIService>();
-            services.AddScoped<IAdminGrpcService, AdminGrpcService>();
+            services.AddScoped<IAdminGrpcClientService, AdminGrpcClientService>();
             services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
             //services.AddScoped<IAdminCoursesService, AdminCoursesService>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+            
 
-
+            services.AddGrpcClient<Courses.CoursesClient>(o =>
+            {
+                o.Address = new Uri("https://localhost:5001");
+            });
             services.AddGrpcClient<Tokenizer.TokenizerClient>(o =>
             {
                 o.Address = new Uri("https://localhost:5001");
@@ -103,7 +108,7 @@ namespace VOD.Admin
                 o.Address = new Uri("https://localhost:5001");
             });
 
-            services.AddAutoMapper(typeof(AdminMappingProfile).Assembly);
+            services.AddAutoMapper(typeof(AdminMappingProfile), typeof(GrpcMappingProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

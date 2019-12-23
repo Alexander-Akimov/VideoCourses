@@ -32,7 +32,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcGreeter", "GrpcGreeter\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcGreeterClient", "GrpcGreeterClient\GrpcGreeterClient.csproj", "{5C9489D3-05D6-42F2-8912-804E7DBB1AAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcProtoLib", "GrpcProtoLib\GrpcProtoLib.csproj", "{D4224C71-4940-4BE3-BC97-571087CA5C63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcProtoLib", "GrpcProtoLib\GrpcProtoLib.csproj", "{D4224C71-4940-4BE3-BC97-571087CA5C63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VOD.Grpc.Common", "VOD.Grpc.Common\VOD.Grpc.Common.csproj", "{8D1C16B7-070E-4F6A-8894-95C4B3042805}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +90,10 @@ Global
 		{D4224C71-4940-4BE3-BC97-571087CA5C63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4224C71-4940-4BE3-BC97-571087CA5C63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4224C71-4940-4BE3-BC97-571087CA5C63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D1C16B7-070E-4F6A-8894-95C4B3042805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D1C16B7-070E-4F6A-8894-95C4B3042805}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D1C16B7-070E-4F6A-8894-95C4B3042805}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D1C16B7-070E-4F6A-8894-95C4B3042805}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

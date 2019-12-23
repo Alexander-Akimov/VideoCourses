@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.25.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.26.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
   </ItemGroup>
@@ -19,6 +19,7 @@
     <ProjectReference Include="..\VOD.Common\VOD.Common.csproj" />
     <ProjectReference Include="..\VOD.Database\VOD.Database.csproj" />
     <ProjectReference Include="..\VOD.Domain.Services\VOD.Domain.Services.csproj" />
+    <ProjectReference Include="..\VOD.Grpc.Common\VOD.Grpc.Common.csproj" />
   </ItemGroup>
 
 </Project>
