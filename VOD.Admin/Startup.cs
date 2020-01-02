@@ -28,6 +28,8 @@ using GrpcProtoLib.Protos;
 using VOD.Grpc.Common.AutoMapper;
 using VOD.Grpc.Common;
 using VOD.Grpc.Common.Services;
+using VOD.Domain.Interfaces.Services;
+using VOD.Domain.DTOModles.Admin;
 
 namespace VOD.Admin
 {
@@ -89,7 +91,12 @@ namespace VOD.Admin
             services.AddScoped<IUserService, UserService>();
             //services.AddScoped<IAdminService, AdminEFService>();
             services.AddScoped<IAdminService, AdminAPIService>();
-            services.AddScoped<IAdminGrpcClientService, AdminGrpcClientService>();
+            
+
+            services.AddScoped<IGenericAdminService<CourseDTO>, CoursesAdminService>();
+            services.AddScoped<IGenericAdminService<InstructorDTO>, InstructorsAdminService>();
+            //services.AddScoped<IAdminGrpcClientService, AdminGrpcClientService>();
+
             services.AddScoped<IHttpClientFactoryService, HttpClientFactoryService>();
             //services.AddScoped<IAdminCoursesService, AdminCoursesService>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
@@ -103,10 +110,7 @@ namespace VOD.Admin
             {
                 o.Address = new Uri("https://localhost:5001");
             });
-            services.AddGrpcClient<Courses.CoursesClient>(o =>
-            {
-                o.Address = new Uri("https://localhost:5001");
-            });
+
 
             services.AddAutoMapper(typeof(AdminMappingProfile), typeof(GrpcMappingProfile));
         }

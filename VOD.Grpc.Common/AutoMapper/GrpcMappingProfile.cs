@@ -21,6 +21,15 @@ namespace VOD.Grpc.Common.AutoMapper
                 .ReverseMap()
                 .ForMember(d => d.UserId, a => a.Ignore());
 
+            CreateMap<CourseMessage, CourseDTO>()
+                .ForMember(d => d.Id, s => s.MapFrom(p => p.Id))
+                .ForMember(d => d.InstructorId, s => s.MapFrom(p => p.InstructorId)) 
+                .ForMember(d => d.Title, s => s.MapFrom(p => p.Title))
+                .ForMember(d => d.ImageUrl, s => s.MapFrom(p => p.ImageUrl))
+                .ForMember(d => d.MarqueeImageUrl, s => s.MapFrom(p => p.MarqueeImageUrl))
+                .ForMember(d => d.Description, s => s.MapFrom(p => p.Description))
+                 .ReverseMap();
+
             CreateMap<TokenDTO, TokenMessage>()
                 .ForMember(d => d.Token, a => a.MapFrom(c => c.Token))
                 .ForMember(d => d.TokenExpires, a => a.MapFrom(c => Timestamp.FromDateTime(c.TokenExpires)))

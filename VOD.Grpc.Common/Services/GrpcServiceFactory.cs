@@ -4,17 +4,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Net.Client;
+using VOD.Domain.Interfaces.Services;
 
-
-namespace GrpcGreeter
+namespace VOD.Grpc.Common.Services
 {
     public class GrpcServiceFactory
     {
+       /* private readonly Dictionary<Type, Func<IGenericAdminService>> _map =
+            new Dictionary<Type, Func<IGenericAdminService>>();
+
         public GrpcServiceFactory()
         {
 
         }
 
+        public IGenericAdminService GetService<EntityType>() where EntityType : class
+        {
+            EntityType entityType;
+
+            
+        }
+        */
         /* public ClientBase<TServiceClient> GetService<TServiceClient>(Type serviceClientType)
               where TServiceClient : class
           {

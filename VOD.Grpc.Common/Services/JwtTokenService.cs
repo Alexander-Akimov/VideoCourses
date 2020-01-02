@@ -17,7 +17,7 @@ using VOD.Domain.DTOModles.Admin;
 using VOD.Domain.Entities;
 using VOD.Domain.Interfaces;
 
-namespace VOD.Grpc.Common
+namespace VOD.Grpc.Common.Services
 {
     public class JwtTokenService : IJwtTokenService
     {
