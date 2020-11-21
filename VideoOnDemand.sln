@@ -34,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcGreeterClient", "GrpcGr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcProtoLib", "GrpcProtoLib\GrpcProtoLib.csproj", "{D4224C71-4940-4BE3-BC97-571087CA5C63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VOD.Grpc.Common", "VOD.Grpc.Common\VOD.Grpc.Common.csproj", "{8D1C16B7-070E-4F6A-8894-95C4B3042805}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VOD.Grpc.Common", "VOD.Grpc.Common\VOD.Grpc.Common.csproj", "{8D1C16B7-070E-4F6A-8894-95C4B3042805}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
