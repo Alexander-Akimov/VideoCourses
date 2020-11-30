@@ -14,14 +14,14 @@ namespace VOD.Admin.TagHelpers
     {
         public string Icon { get; set; } = string.Empty;
 
-        const string btnPrimary = "btn-primary";
-        const string btnDanger = "btn-danger";
-        const string btnDefault = "btn-default";
-        const string btnInfo = "btn-info";
-        const string btnSuccess = "btn-success";
-        const string btnWarning = "btn-warning";
+        const string BTN_PRIMARY = "btn-primary";
+        const string BTN_DANGER = "btn-danger";
+        const string BTN_DEFAULT = "btn-default";
+        const string BTN_INFO = "btn-info";
+        const string BTN_SUCCESS = "btn-success";
+        const string BTN_WARNING = "btn-warning";
         //Google's Materials Icons provider name
-        const string iconProvider = "material-icons";
+        const string ICON_PROVIDER = "material-icons";
 
         public BtnTagHelper(IHtmlGenerator generator) : base(generator) { }
 
@@ -40,7 +40,7 @@ namespace VOD.Admin.TagHelpers
             var classAttribute = context.AllAttributes.SingleOrDefault(
                 p => p.Name.ToLower().Equals("class"));
 
-            var buttonStyle = btnDefault;
+            var buttonStyle = BTN_DEFAULT;
 
             if (aspPageAttribute != null)
             {
@@ -48,14 +48,14 @@ namespace VOD.Admin.TagHelpers
 
                 switch (pageValue)
                 {
-                    case "create": buttonStyle = btnPrimary; break;
-                    case "delete": buttonStyle = btnDanger; break;
-                    case "edit": buttonStyle = btnSuccess; break;
-                    case "index": buttonStyle = btnPrimary; break;
-                    case "details": buttonStyle = btnInfo; break;
-                    case "/index": buttonStyle = btnWarning; break;
-                    case "error": buttonStyle = btnDanger; break;
-                    default: buttonStyle = btnDefault; break;
+                    case "create": buttonStyle = BTN_PRIMARY; break;
+                    case "delete": buttonStyle = BTN_DANGER; break;
+                    case "edit": buttonStyle = BTN_SUCCESS; break;
+                    case "index": buttonStyle = BTN_PRIMARY; break;
+                    case "details": buttonStyle = BTN_INFO; break;
+                    case "/index": buttonStyle = BTN_WARNING; break;
+                    case "error": buttonStyle = BTN_DANGER; break;
+                    default: buttonStyle = BTN_DEFAULT; break;
                 }
             }
             var bootstrapClasses = $"btn-sm {buttonStyle}";
@@ -83,7 +83,7 @@ namespace VOD.Admin.TagHelpers
                 var content = childContent.GetContent().Trim();
                 if (content.Length > 0) content = $"&nbsp{content}";
 
-                output.Content.SetHtmlContent($@"<i class='{iconProvider}'
+                output.Content.SetHtmlContent($@"<i class='{ICON_PROVIDER}'
                     style='display: inline-flex; vertical-align: top;
                     line-height: inherit;font-size: medium;'>{Icon}</i>
                     <span style='font-size: medium;'>{content}</span>");

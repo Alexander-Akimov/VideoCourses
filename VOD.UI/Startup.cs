@@ -71,6 +71,7 @@ namespace VOD.UI
             services.AddScoped<IUIReadService, UIReadService>();
 
             services.AddSingleton(AutoMapperConfig.GetMapper());
+            services.AddDatabaseDeveloperPageExceptionFilter();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,7 +80,7 @@ namespace VOD.UI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseMigrationsEndPoint(); //https://github.com/dotnet/aspnetcore/pull/24588
             }
             else
             {
